@@ -1,5 +1,6 @@
 #!/bin/bash
-# Rebuild everything.   ./build.sh [diagrams|html|renders|all]     (default: diagrams + html)
+# Rebuild everything.   ./build.sh [diagrams|envelope|html|renders|all]     (default: diagrams + envelope + html)
+# envelope: NA=0.4 ./build.sh envelope   (objective NA assumed for the beam-size check)
 # Needs: python3 (stdlib only), Inkscape (set INKSCAPE=... if not in /Applications), Google Chrome (for 3D PNG renders).
 set -e
 cd "$(dirname "$0")"
@@ -18,6 +19,16 @@ diagrams() {
     "$INK" --export-type=png --export-width=3400 --export-background=white $n.svg --export-filename=$n.png >/dev/null 2>&1
   done
 }
+envelope() {
+  [ -f "$LIB" ] || ./fetch_library.sh
+  for v in default swapped; do
+    n=diagrams/beam_envelope_$v
+    python3 -I src/make_envelope.py "$PWD/src" "$LIB" "$INK" $n.svg $v ${NA:-0.4}
+    "$INK" --vacuum-defs --export-filename=$n.svg $n.svg >/dev/null 2>&1
+    "$INK" --export-type=pdf --export-text-to-path $n.svg --export-filename=$n.pdf >/dev/null 2>&1
+    "$INK" --export-type=png --export-width=2400 --export-background=white $n.svg --export-filename=$n.png >/dev/null 2>&1
+  done
+}
 html() { mkdir -p 3d; python3 -I src/build_3d.py "$PWD/3d/layout3d_interactive.html"; }
 renders() {
   mkdir -p 3d/renders
@@ -31,5 +42,5 @@ renders() {
   python3 -I src/shot.py "$H" "view=top&variant=swapped&cap=$C+%28top%29&sub=$S" 3d/renders/layout3d_swapped_top.png 1800 1190
 }
 case "$what" in
-  diagrams) diagrams;; html) html;; renders) renders;; all) diagrams; html; renders;; *) diagrams; html;;
+  diagrams) diagrams;; envelope) envelope;; html) html;; renders) renders;; all) diagrams; envelope; html; renders;; *) diagrams; envelope; html;;
 esac

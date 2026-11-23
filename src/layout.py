@@ -40,7 +40,7 @@ def build(swapped):
           ('lens', A + B, JOG, 2, 100, 'L4  f=100 mm'),
           ('mirror', A + B + 110, JOG, (1, 0), (0, 1), 2, 'M9 2″'), ('mirror', A + B + 110, JOG + 100, (0, 1), (1, 0), 1, 'M10 1″'),
           ('lens', A + B + 200, JOG + 100, 1, 40, 'L5  f=40 mm'),
-          ('camera', A + B + 250, JOG + 100, 'basler', 'Basler acA4029-29um')]
+          ('camera', A + B + 240, JOG + 100, 'basler', 'Basler acA4029-29um')]
     def chain(spec, heading, tag):
         h = heading; l = (h[1], -h[0])
         G = lambda u, v: (DM[0] + u * h[0] + v * l[0], DM[1] + u * h[1] + v * l[1])
