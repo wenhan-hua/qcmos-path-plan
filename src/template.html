@@ -1,0 +1,301 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Imaging path – 3D layout</title>
+<style>
+ html,body{margin:0;height:100%;overflow:hidden;background:#e9edf2;font-family:Helvetica,Arial,sans-serif}
+ #ui{position:absolute;left:14px;top:12px;width:300px;background:rgba(255,255,255,.88);border-radius:10px;padding:12px 14px;
+     box-shadow:0 2px 10px rgba(0,0,0,.18);font-size:13px;color:#222}
+ #ui h1{font-size:16px;margin:0 0 6px}
+ #ui button{font:inherit;margin:3px 4px 3px 0;padding:5px 9px;border:1px solid #889;border-radius:6px;background:#f4f6fa;cursor:pointer}
+ #ui button.on{background:#2b6cb0;color:#fff;border-color:#2b6cb0}
+ #ui .row{margin-top:6px}
+ #ui small{color:#555;display:block;line-height:1.35;margin-top:6px}
+ .sw{display:inline-block;width:22px;height:4px;vertical-align:middle;margin-right:6px;border-radius:2px}
+</style></head><body>
+<div id="ui">
+ <h1>Single-atom imaging path – 3D layout</h1>
+ <div class="row"><b>Dichroic ports</b><br>
+  <button id="bDef">qCMOS on T · Basler on R</button><br>
+  <button id="bSw">qCMOS on R · Basler on T</button></div>
+ <div class="row"><b>View</b><br>
+  <button data-v="iso">Iso</button><button data-v="top">Top</button><button data-v="side">Side</button>
+  <button id="bLab" class="on">Labels</button></div>
+ <small id="info"></small>
+ <small><b>Rev. 2026-11-23:</b> Basler relay lens L4 = 100 mm, last lens L5 = 40 mm (M = 6×). T port: L2 = 150 mm, L3 = 40 mm (M = 4×).</small>
+ <small><span class="sw" style="background:#ff2a1a"></span>852 nm &nbsp; <span class="sw" style="background:#d21cff"></span>1030 nm<br>
+ Drag = orbit · wheel = zoom · right-drag = pan · F = flip ports<br>
+ All beams at 4″ (101.6 mm) above the table. Distances to scale; obj → L1 spacing is free (collimated).</small>
+</div>
+<script>/*THREE*/</script>
+<script>/*ORBIT*/</script>
+<script>
+const LAYOUTS = /*LAYOUTS*/;
+const BEAM_Y = 101.6;
+const params = new URLSearchParams(location.hash.slice(1));
+if (params.get('ui') === '0') document.getElementById('ui').style.display = 'none';
+
+const renderer = new THREE.WebGLRenderer({antialias:true, preserveDrawingBuffer:true});
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setSize(innerWidth, innerHeight);
+renderer.outputEncoding = THREE.sRGBEncoding;
+renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 0.78;
+renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+document.body.appendChild(renderer.domElement);
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0xe9edf2);
+const camera = new THREE.PerspectiveCamera(32, innerWidth/innerHeight, 10, 20000);
+const controls = new THREE.OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true; controls.maxPolarAngle = Math.PI*0.499;
+
+// ---- lighting + procedural environment (for metals / glass reflections)
+(function(){
+  const env = new THREE.Scene();
+  env.add(new THREE.Mesh(new THREE.SphereGeometry(100,32,16), new THREE.MeshBasicMaterial({color:0x66707e, side:THREE.BackSide})));
+  const panel = (x,y,z,s,i)=>{const m=new THREE.Mesh(new THREE.PlaneGeometry(s,s), new THREE.MeshBasicMaterial({color:new THREE.Color(i,i,i), side:THREE.DoubleSide}));
+     m.position.set(x,y,z); m.lookAt(0,0,0); env.add(m);};
+  panel(-40,70,40,50,5); panel(60,50,-50,35,3); panel(0,95,0,60,2);
+  const pm = new THREE.PMREMGenerator(renderer); scene.environment = pm.fromScene(env, 0.02).texture;
+})();
+scene.add(new THREE.HemisphereLight(0xffffff, 0x707888, 0.28));
+const sun = new THREE.DirectionalLight(0xffffff, 1.35);
+sun.position.set(-260, 1500, 380); sun.castShadow = true;
+sun.shadow.mapSize.set(2048,2048);
+Object.assign(sun.shadow.camera, {left:-900,right:900,top:900,bottom:-900,near:100,far:3000});
+sun.shadow.bias = -0.0004; scene.add(sun);
+
+// ---- materials
+const mat = {
+  black: new THREE.MeshStandardMaterial({color:0x17181a, roughness:.55, metalness:.35}),
+  anod:  new THREE.MeshStandardMaterial({color:0x23262b, roughness:.45, metalness:.6}),
+  alu:   new THREE.MeshStandardMaterial({color:0xb4bac2, roughness:.38, metalness:.9}),
+  body:  new THREE.MeshStandardMaterial({color:0x2c3036, roughness:.5, metalness:.55}),
+  blue:  new THREE.MeshStandardMaterial({color:0x1f6fb5, roughness:.4, metalness:.5}),
+  mirror:new THREE.MeshStandardMaterial({color:0xf3f5f8, roughness:.03, metalness:1}),
+  glass: new THREE.MeshPhysicalMaterial({color:0xcfe6ff, roughness:.04, metalness:0, transparent:true, opacity:.30, clearcoat:1, side:THREE.DoubleSide}),
+  filt:  new THREE.MeshPhysicalMaterial({color:0x6fcf76, roughness:.1, transparent:true, opacity:.55, side:THREE.DoubleSide}),
+  dmShort:new THREE.MeshPhysicalMaterial({color:0x4fb4c9, roughness:.06, metalness:.3, transparent:true, opacity:.55, clearcoat:1, side:THREE.DoubleSide}),
+  dmLong: new THREE.MeshPhysicalMaterial({color:0xe0a050, roughness:.06, metalness:.3, transparent:true, opacity:.55, clearcoat:1, side:THREE.DoubleSide}),
+};
+const BEAMCOL = {852:0xff2a1a, 1030:0xd21cff};
+
+// ---- geometry helpers (local frame: +X = forward, +Y up, group origin on the beam axis)
+function cylX(r, len, m, x0, hole){
+  let g;
+  if (hole){ const s=new THREE.Shape(); s.absarc(0,0,r,0,Math.PI*2,false);
+    const h=new THREE.Path(); h.absarc(0,0,hole,0,Math.PI*2,true); s.holes.push(h);
+    g=new THREE.ExtrudeGeometry(s,{depth:len,bevelEnabled:false,curveSegments:48}); g.rotateY(Math.PI/2); g.translate(x0,0,0);
+  } else { g=new THREE.CylinderGeometry(r,r,len,48); g.rotateZ(-Math.PI/2); g.translate(x0+len/2,0,0); }
+  const me=new THREE.Mesh(g,m); me.castShadow=me.receiveShadow=true; return me;
+}
+function box(sx,sy,sz,m,x,y,z){ const me=new THREE.Mesh(new THREE.BoxGeometry(sx,sy,sz),m); me.position.set(x,y,z); me.castShadow=me.receiveShadow=true; return me;}
+function vcyl(r,h,m,x,y0,z){ const me=new THREE.Mesh(new THREE.CylinderGeometry(r,r,h,32),m); me.position.set(x,y0+h/2,z); me.castShadow=me.receiveShadow=true; return me;}
+// post + holder + clamp-fork base, from table (local y = -BEAM_Y) up to y=top (local)
+function post(g, x, z, top){
+  const y0 = -BEAM_Y;
+  g.add(box(32,8,64,mat.alu,x,y0+4,z));                        // base clamp
+  g.add(vcyl(11,34,mat.alu,x,y0+8,z));                         // post holder
+  g.add(vcyl(6.35,top-(y0+8),mat.alu,x,y0+8,z));               // post
+}
+const dirRot = (g,dx,dz)=>{ g.rotation.y = -Math.atan2(dz,dx); };
+
+function mkMirror(p, dm){           // p: part, glass faces n = normalised(dout-din)
+  const g=new THREE.Group(); const R = p.size===2?25.4:12.7, ring=p.size===2?39:21.5, th=p.size===2?9.5:6;
+  const gl = cylX(R, th, dm || mat.mirror, -th); g.add(gl);
+  g.add(cylX(ring, 15, mat.anod, -th-3, R-1.5));                                       // front ring
+  g.add(cylX(ring, 12, mat.anod, -th-15));                                              // back plate
+  const kr=ring*.72; [[kr,0],[-kr/2,kr*.87],[-kr/2,-kr*.87]].forEach(([y,z])=>{ const k=cylX(4.5,16,mat.black,-th-31); k.position.set(0,y,z); g.add(k); });
+  post(g, -th-9, 0, -ring+2);
+  return g;
+}
+function mkLens(p){
+  const g=new THREE.Group(); const two=p.size===2, R=two?25.4:12.7, tube=two?33:19, len=two?15:10;
+  const e=new THREE.Mesh(new THREE.SphereGeometry(R,48,24), mat.glass); e.scale.set(two?.17:.2,1,1); e.castShadow=false; g.add(e);
+  g.add(cylX(tube, len, mat.anod, -len/2, R-1.2));
+  g.add(cylX(tube+1.5, 2.5, mat.alu, len/2-.5));
+  post(g, 0, 0, -tube+3);
+  return g;
+}
+function mkFilter(p){
+  const g=new THREE.Group(); const R=12.7, tube=19;
+  g.add(cylX(R,3.5,mat.filt,-1.75)); g.add(cylX(tube,10,mat.anod,-5,R-1.2)); post(g,0,0,-tube+3); return g;
+}
+function mkObjective(p){
+  const g=new THREE.Group();
+  const prof=[[0,0],[3.5,0],[4.5,2],[8,14],[12,24],[14.5,30],[14.8,34],[14.8,54],[16.5,54],[16.5,58],[15,58],[15,p.length]].map(a=>new THREE.Vector2(a[0],a[1]));
+  const lg=new THREE.LatheGeometry(prof,48); lg.rotateZ(-Math.PI/2);
+  const me=new THREE.Mesh(lg,mat.body); me.castShadow=true; g.add(me);
+  g.add(cylX(14.9,3,mat.alu,34)); g.add(cylX(14.9,2,mat.alu,50)); g.add(cylX(15.5,10,mat.alu,22));  // rings
+  post(g, 45, 0, -22);
+  g.add(box(40,10,40,mat.alu,45,-26.5,0));
+  return g;
+}
+function mkCamera(p){
+  const g=new THREE.Group();
+  if (p.model==='qcmos'){                         // Hamamatsu ORCA-Quest style box (approximate envelope 100x100x160)
+    g.add(cylX(20,17.5,mat.alu,-17.5,12)); g.add(cylX(24,3,mat.alu,-17.5-0.01));
+    g.add(box(160,100,100,mat.body,62.5,0,0));
+    g.add(box(4,104,104,mat.alu,-15,0,0));
+    for(let i=-4;i<=4;i++) g.add(box(130,16,2.6,mat.alu,70,58,i*10));
+    g.add(box(6,26,70,mat.black,145,0,0)); g.add(box(20,22,36,mat.anod,155,-18,0));
+    g.add(box(110,6,120,mat.alu,62.5,-53,0)); post(g,40,0,-56);
+    g.add(box(1.5,38,50,mat.blue,2,0,50.7));      // accent plate
+  } else {                                        // Basler ace 29x29x~42
+    g.add(cylX(14.5,17.5,mat.alu,-17.5,10));
+    g.add(box(42,29,29,mat.alu,3.5,0,0)); g.add(box(.8,20,20,mat.blue,3.5,0,14.9));
+    g.add(box(10,22,22,mat.black,28,0,0));
+    post(g,5,0,-15.5);
+  }
+  return g;
+}
+function mkFov(p){
+  const g=new THREE.Group(); const m=new THREE.Mesh(new THREE.SphereGeometry(1.6,16,12), new THREE.MeshBasicMaterial({color:0xffd23f})); g.add(m);
+  const pl=new THREE.Mesh(new THREE.PlaneGeometry(10,10), new THREE.MeshBasicMaterial({color:0xffd23f,transparent:true,opacity:.25,side:THREE.DoubleSide}));
+  pl.rotation.y=Math.PI/2; g.add(pl); return g;
+}
+
+// ---- labels (sprites)
+let LABW=118;
+function labelSprite(text, sub){
+  const c=document.createElement('canvas'); c.width=640; c.height=sub?160:100; const x=c.getContext('2d');
+  x.fillStyle='rgba(255,255,255,.92)'; x.strokeStyle='rgba(60,70,90,.7)'; x.lineWidth=3;
+  const r=22; x.beginPath(); x.moveTo(r,2); x.arcTo(c.width-2,2,c.width-2,c.height-2,r); x.arcTo(c.width-2,c.height-2,2,c.height-2,r); x.arcTo(2,c.height-2,2,2,r); x.arcTo(2,2,c.width-2,2,r); x.closePath(); x.fill(); x.stroke();
+  x.fillStyle='#111'; let fs=56; x.font='bold '+fs+'px Helvetica,Arial,sans-serif'; while(x.measureText(text).width>c.width-36){fs-=2; x.font='bold '+fs+'px Helvetica,Arial,sans-serif';} x.textAlign='center'; x.textBaseline='middle';
+  x.fillText(text, c.width/2, sub?50:c.height/2);
+  if (sub){ x.fillStyle='#444'; x.font='38px Helvetica,Arial,sans-serif'; x.fillText(sub, c.width/2, 112); }
+  const t=new THREE.CanvasTexture(c); t.encoding=THREE.sRGBEncoding; t.anisotropy=4;
+  const s=new THREE.Sprite(new THREE.SpriteMaterial({map:t, depthTest:false, transparent:true, toneMapped:false}));
+  s.scale.set(LABW, LABW*c.height/c.width, 1); s.renderOrder=10; return s;
+}
+
+// ---- table
+function mkTable(ext){
+  const x0=Math.floor((ext.minx-170)/75)*75, x1=Math.ceil((ext.maxx+40)/75)*75, z0=Math.floor((ext.minz-170)/75)*75, z1=Math.ceil((ext.maxz+20)/75)*75;
+  const sx=x1-x0, sz=z1-z0, T=60;
+  const c=document.createElement('canvas'); c.width=c.height=128; const q=c.getContext('2d');
+  q.fillStyle='#8a9098'; q.fillRect(0,0,128,128);
+  q.fillStyle='#6c727a'; q.fillRect(0,0,128,1.5); q.fillRect(0,0,1.5,128);
+  const gr=q.createRadialGradient(64,64,2,64,64,15); gr.addColorStop(0,'#15171a'); gr.addColorStop(.75,'#2a2d33'); gr.addColorStop(1,'#a9aeb5');
+  q.fillStyle=gr; q.beginPath(); q.arc(64,64,15,0,7); q.fill();
+  const tex=new THREE.CanvasTexture(c); tex.wrapS=tex.wrapT=THREE.RepeatWrapping; tex.repeat.set(sx/25, sz/25); tex.anisotropy=16;
+  tex.offset.set(0.5,0.5); tex.encoding=THREE.sRGBEncoding;
+  const top=new THREE.MeshStandardMaterial({map:tex, roughness:.45, metalness:.7});
+  const side=new THREE.MeshStandardMaterial({color:0x7d838b, roughness:.5, metalness:.7});
+  const m=new THREE.Mesh(new THREE.BoxGeometry(sx,T,sz),[side,side,top,side,side,side]);
+  m.position.set(x0+sx/2,-T/2,z0+sz/2); m.receiveShadow=true; m.castShadow=false;
+  const g=new THREE.Group(); g.add(m);
+  // scale bar
+  const bar=new THREE.Mesh(new THREE.BoxGeometry(100,.8,4),new THREE.MeshBasicMaterial({color:0x222222})); bar.position.set(x0+60+50,.5,z1-30); g.add(bar);
+  const sp=labelSprite('100 mm'); sp.scale.multiplyScalar(.5); sp.position.set(x0+110,18,z1-30); g.add(sp);
+  g.userData={x0,x1,z0,z1}; return g;
+}
+
+// ---- build a layout
+let world=null, labels=[], current=null;
+function beamTube(a,b,color,yoff){
+  const A=new THREE.Vector3(a[0],BEAM_Y+yoff,a[1]), B=new THREE.Vector3(b[0],BEAM_Y+yoff,b[1]);
+  const len=A.distanceTo(B); const g=new THREE.CylinderGeometry(.9,.9,len,10);
+  const m=new THREE.Mesh(g,new THREE.MeshBasicMaterial({color, toneMapped:false})); m.position.copy(A).add(B).multiplyScalar(.5);
+  m.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0), B.clone().sub(A).normalize()); return m;
+}
+function build(key){
+  if (world) scene.remove(world);
+  world=new THREE.Group(); labels=[]; const L=LAYOUTS[key]; current=key;
+  const tbl=mkTable(L.ext); world.add(tbl);
+  L.parts.forEach(p=>{
+    let g=null, sub='';
+    if (p.kind==='mirror'){ const n=[p.dout[0]-p.din[0], p.dout[1]-p.din[1]]; const m=Math.hypot(...n); g=mkMirror(p); p.dx=n[0]/m; p.dz=n[1]/m; sub=p.size+'″ mirror'; }
+    else if (p.kind==='dm'){ const n=[p.dout[0]-p.din[0], p.dout[1]-p.din[1]]; const m=Math.hypot(...n); g=mkMirror(p, p.kindDM==='longpass'?mat.dmLong:mat.dmShort); p.dx=n[0]/m; p.dz=n[1]/m; sub=p.kindDM+' · T '+(p.kindDM==='longpass'?'1030':'852')+' / R '+(p.kindDM==='longpass'?'852':'1030')+' nm'; }
+    else if (p.kind==='lens'){ g=mkLens(p); sub=p.size+'″ lens'; }
+    else if (p.kind==='filter'){ g=mkFilter(p); sub='1″ filter'; }
+    else if (p.kind==='objective'){ g=mkObjective(p); sub='infinity-corrected'; }
+    else if (p.kind==='camera'){ g=mkCamera(p); sub=p.model==='qcmos'?'4.6 µm px · 18.8×10.6 mm':'1.85 µm px · 7.5×5.6 mm'; }
+    else if (p.kind==='fov'){ g=mkFov(p); sub='object plane'; }
+    if (!g) return;
+    g.position.set(p.x, BEAM_Y, p.z); dirRot(g,p.dx,p.dz); world.add(g);
+    // label (staggered heights + leader line)
+    const top = 125 + (labels.length%2)*22 + (p.kind==='camera'&&p.model==='qcmos'?45:0);
+    const showSub = (p.kind==='camera'||p.kind==='dm'||p.kind==='fov');
+    const sp=labelSprite(p.label, showSub?sub:'');
+    let off=[0,0];
+    if (p.kind==='mirror'||p.kind==='dm'){ off=[-p.dx*100,-p.dz*66]; }
+    else if (p.kind==='camera'){ off=[p.dx*30,p.dz*30]; if(Math.abs(p.dz)>.5) off=[-110,0]; else off=[30,-100]; }
+    else if (p.kind!=='fov'){ const px=-p.dz, pz=p.dx; /* perpendicular */ off=Math.abs(px)>.5?[Math.sign(px)*105,0]:[0,Math.sign(pz)*62]; if(p.kind==='objective') off=[40,-58]; }
+    else off=[0,-60];
+    sp.position.set(p.x+off[0], top, p.z+off[1]);
+    sp.userData.p=p; world.add(sp); labels.push(sp);
+  });
+  // relax label positions in the table plane so they don't overlap (leader lines keep them tied to parts)
+  for (let it=0; it<300; it++){
+    let moved=false;
+    for (let i=0;i<labels.length;i++) for (let j=i+1;j<labels.length;j++){
+      const A=labels[i], B=labels[j]; const dx=B.position.x-A.position.x, dz=B.position.z-A.position.z;
+      const ox=(A.scale.x+B.scale.x)/2+6-Math.abs(dx), oz=(A.scale.y+B.scale.y)/2+10-Math.abs(dz);
+      if (ox>0 && oz>0){ moved=true;
+        if (oz<ox){ const s=(dz>=0?1:-1)*oz/2; A.position.z-=s; B.position.z+=s; } else { const s=(dx>=0?1:-1)*ox/2; A.position.x-=s; B.position.x+=s; } }
+    }
+    if(!moved) break;
+  }
+  labels.forEach(sp=>{ const p=sp.userData.p;
+    const ln=new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(sp.position.x,sp.position.y-14,sp.position.z), new THREE.Vector3(p.x,BEAM_Y+(p.kind==='camera'?52:p.kind==='fov'?4:34),p.z)]), new THREE.LineBasicMaterial({color:0x2d3648, transparent:true, opacity:.75}));
+    sp.userData.line=ln; sp.userData.anchor=new THREE.Vector3(p.x,BEAM_Y+(p.kind==='camera'?52:p.kind==='fov'?4:34),p.z); world.add(ln); });
+  L.beams.forEach(b=>{
+    for (let i=0;i<b.pts.length-1;i++){
+      if (b.wl==='both'){ world.add(beamTube(b.pts[i],b.pts[i+1],BEAMCOL[852],1.3)); world.add(beamTube(b.pts[i],b.pts[i+1],BEAMCOL[1030],-1.3)); }
+      else world.add(beamTube(b.pts[i],b.pts[i+1],BEAMCOL[b.wl],0));
+    }
+  });
+  scene.add(world);
+  const sw = key==='swapped';
+  document.getElementById('bDef').classList.toggle('on',!sw); document.getElementById('bSw').classList.toggle('on',sw);
+  document.getElementById('info').innerHTML = sw
+    ? '<b>Ports swapped:</b> DM reflects 852 nm → qCMOS (R port), transmits 1030 nm → Basler (T port). Needs a <b>longpass</b> DM (not the DMSP1000L).'
+    : '<b>Default:</b> DM transmits 852 nm → qCMOS (T port), reflects 1030 nm → Basler (R port). DM = Thorlabs <b>DMSP1000L</b> (2″ shortpass).';
+  setLabels(labelsOn); const D=tbl.userData; return D;
+}
+let labelsOn = params.get('labels')!=='0';
+function setLabels(on){ labelsOn=on; labels.forEach(s=>{s.visible=on; s.userData.line.visible=on;}); document.getElementById('bLab').classList.toggle('on',on); }
+
+function relaxScreen(){
+  camera.updateMatrixWorld(); const H=renderer.domElement.height/Math.min(window.devicePixelRatio,2), Wd=renderer.domElement.width/Math.min(window.devicePixelRatio,2);
+  const up=new THREE.Vector3(0,1,0).applyQuaternion(camera.quaternion), rt=new THREE.Vector3(1,0,0).applyQuaternion(camera.quaternion);
+  const info=()=>labels.map(s=>{ const d=s.position.distanceTo(camera.position); const ppu=H/(2*Math.tan(camera.fov*Math.PI/360)*d);
+     const v=s.position.clone().project(camera); return {s, x:(v.x*.5+.5)*Wd, y:(-v.y*.5+.5)*H, w:s.scale.x*ppu+8, h:s.scale.y*ppu+8, ppu}; });
+  for (let it=0; it<400; it++){
+    const I=info(); let moved=false;
+    for (let i=0;i<I.length;i++) for (let j=i+1;j<I.length;j++){
+      const A=I[i], B=I[j]; const dx=B.x-A.x, dy=B.y-A.y; const ox=(A.w+B.w)/2-Math.abs(dx), oy=(A.h+B.h)/2-Math.abs(dy);
+      if (ox>0 && oy>0){ moved=true; const sgn=dy>=0?1:-1; const m=oy/2+1;      // push apart vertically on screen (world: along camera-up)
+        A.s.position.addScaledVector(up, (sgn>0?1:-1)*m/A.ppu); B.s.position.addScaledVector(up, (sgn>0?-1:1)*m/B.ppu); }
+    }
+    if(!moved) break;
+  }
+  labels.forEach(s=>{ const L=s.userData.line; L.geometry.setFromPoints([s.position.clone().add(new THREE.Vector3(0,-14,0)), s.userData.anchor]); });
+}
+function setView(v){
+  const E=LAYOUTS[current].ext; const cx=(E.minx+E.maxx-100)/2, cz=(E.minz+E.maxz-100)/2, R=Math.max(E.maxx-E.minx, E.maxz-E.minz)+60;
+  const tz=cz+(v==='top'?30:0); controls.target.set(cx, 30, tz);
+  const dirs={iso:[-.30,.95,.70], top:[0,1,.001], side:[0,.2,1]}; const d=dirs[v]||dirs.iso, m=Math.hypot(...d);
+  const k = (v==='top'?1.9:v==='side'?1.35:1.3)*R/m;
+  camera.position.set(cx+d[0]*k, 30+d[1]*k, tz+d[2]*k); camera.lookAt(controls.target); controls.update();
+  camera.updateMatrixWorld(); relaxScreen();
+}
+let D0 = build(params.get('variant')==='swapped'?'swapped':'default'); setView(params.get('view')||'iso');
+document.getElementById('bDef').onclick=()=>{build('default');relaxScreen();}; document.getElementById('bSw').onclick=()=>{build('swapped');relaxScreen();};
+document.getElementById('bLab').onclick=()=>setLabels(!labelsOn);
+document.querySelectorAll('[data-v]').forEach(b=>b.onclick=()=>setView(b.dataset.v));
+addEventListener('keydown',e=>{ if(e.key==='f'||e.key==='F'){ build(current==='default'?'swapped':'default'); relaxScreen(); } });
+addEventListener('resize',()=>{renderer.setSize(innerWidth,innerHeight); camera.aspect=innerWidth/innerHeight; camera.updateProjectionMatrix();});
+let frames=0; const maxFrames = params.get('once')==='1' ? 3 : Infinity;
+function exportPNG(){
+  const W=renderer.domElement.width, H=renderer.domElement.height, c=document.createElement('canvas'); c.width=W; c.height=H;
+  const x=c.getContext('2d'); x.drawImage(renderer.domElement,0,0);
+  const k=W/1800, cap=params.get('cap')||'', sub=params.get('sub')||'';
+  x.fillStyle='#111'; x.font='bold '+(30*k)+'px Helvetica,Arial,sans-serif'; x.fillText(cap, 28*k, 52*k);
+  x.fillStyle='#444'; x.font=(18*k)+'px Helvetica,Arial,sans-serif'; x.fillText(sub, 28*k, 82*k);
+  x.fillStyle='#ff2a1a'; x.fillRect(28*k,104*k,34*k,6*k); x.fillStyle='#111'; x.font=(16*k)+'px Helvetica,Arial,sans-serif'; x.fillText('852 nm', 70*k, 112*k);
+  x.fillStyle='#d21cff'; x.fillRect(150*k,104*k,34*k,6*k); x.fillStyle='#111'; x.fillText('1030 nm', 192*k, 112*k);
+  const ta=document.createElement('textarea'); ta.id='out'; ta.textContent=c.toDataURL('image/png'); document.body.appendChild(ta);
+}
+(function loop(){ controls.update(); renderer.render(scene,camera);
+  if (frames++<maxFrames) requestAnimationFrame(loop); else if (maxFrames!==Infinity && !document.getElementById('out')) exportPNG(); })();
+window.__ready = true;
+</script></body></html>

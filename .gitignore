@@ -1,0 +1,6 @@
+# third-party / local-only
+third_party/
+lib/
+.venv/
+__pycache__/
+.DS_Store
