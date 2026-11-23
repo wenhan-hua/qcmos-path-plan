@@ -1,15 +1,22 @@
-"""To-scale table layout (mm) for the FoV -> objective -> DM -> {qCMOS, Basler} imaging path.
+"""To-scale table layout (mm) for the FoV -> objective -> DM -> {qCMOS, Basler} imaging path.  REV 2026-11-23 "compact".
 Top view: x to the right, y 'south' (down the page).  Beam height above table is set in the 3D viewer.
-Spacings obey the optics: obj collimates, L1 focuses, L1->(L2|L4) = 2*f = 300 mm (1:1 relay), last lens -> sensor = f."""
+Spacings obey the optics: obj collimates, L1 focuses, L1 -> relay lens = f(L1) + f(relay), last lens -> sensor = f.
+Compact front end + short post-relay legs keep the 1x1 mm field unvignetted (see optics_trace.py / check_layout.py).
+The objective back aperture (exit pupil) is at x = 70 mm; obj back -> L1 must be >= 150 mm (here 170 mm of beam path)."""
 import json, math
 
 D_L1_DM = 45
+OBJ_BACK = 70                                   # objective body spans x = 8 .. 70 mm (FoV at x = 0)
+OBJ_TO_M1, M1_TO_M2, M2_TO_L1 = 55, 60, 55      # beam path after the back aperture: 55 + 60 + 55 = 170 mm  (>= 150 mm required)
+# legs after the relay lens (beam path, mm) -- kept short so the field-angle walk-off stays inside the 1'' parts
+Q_TAIL = dict(L2_M5=45, JOG2=60, M6_F1=30, F1_F2=20, F2_L3=25, L3_SENSOR=40)      # qCMOS branch  (L2 -> L3 = 180)
+B_TAIL = dict(L4_M9=45, JOG2=75, M10_L5=35, L5_SENSOR=40)                          # Basler branch (L4 -> L5 = 155)
 # Relay rule: the intermediate image sits f(L1)=150 mm after L1; the relay lens collimates it, so
 #   L1 -> relay lens = 150 + f(relay).   T chain (qCMOS) relay L2 = 150 mm -> 300 mm ;  Basler chain relay L4 = 100 mm -> 250 mm.
 RELAY_TOTAL = {'Q': 150 + 150, 'B': 150 + 100}
 # (A, JOG, B) per (chain, port): DM->first fold mirror, jog length, second fold mirror -> relay lens.
 # Chosen so that D + A + JOG + B = RELAY_TOTAL and the 2'' mounts of the two ports clear each other.
-PARAMS = {('Q', 'T'): (120, 85, 50), ('B', 'R'): (70, 75, 60), ('B', 'T'): (90, 70, 45), ('Q', 'R'): (70, 130, 55)}
+PARAMS = {('Q', 'T'): (120, 85, 50), ('B', 'R'): (70, 75, 60), ('B', 'T'): (80, 75, 50), ('Q', 'R'): (80, 130, 45)}
 for (_c, _p), (_a, _j, _b) in PARAMS.items(): assert D_L1_DM + _a + _j + _b == RELAY_TOTAL[_c], (_c, _p)
 
 def unit(v):
@@ -20,7 +27,7 @@ def build(swapped):
     def add(kind, p, d, **kw):
         parts.append(dict(kind=kind, x=round(p[0], 2), z=round(p[1], 2), dx=d[0], dz=d[1], **kw))
     # ---- common path --------------------------------------------------------------------------
-    FOV = (0, 0); M1 = (230, 0); M2 = (230, 150); DM = (390, 150); L1 = (DM[0] - D_L1_DM, 150)
+    FOV = (0, 0); M1 = (OBJ_BACK + OBJ_TO_M1, 0); M2 = (M1[0], M1_TO_M2); L1 = (M2[0] + M2_TO_L1, M2[1]); DM = (L1[0] + D_L1_DM, M2[1])
     add('fov', FOV, (1, 0), label='FoV 1×1 mm')
     add('objective', (8, 0), (1, 0), label='Static objective EFL 10 mm', length=62)
     add('mirror', M1, (1, 0), din=(1, 0), dout=(0, 1), size=2, label='M1 (1″/2″)')
@@ -30,17 +37,21 @@ def build(swapped):
     common = [FOV, M1, M2, DM]
 
     # chains in local frame (u along port heading from DM, v to the left of heading)
-    def Q(A, JOG, B): return [('mirror', A, 0, (1, 0), (0, 1), 2, 'M3 2″'), ('mirror', A, JOG, (0, 1), (1, 0), 2, 'M4 2″'),
-         ('lens', A + B, JOG, 2, 150, 'L2  f=150 mm'),
-         ('mirror', A + B + 110, JOG, (1, 0), (0, -1), 2, 'M5 2″'), ('mirror', A + B + 110, 0, (0, -1), (1, 0), 1, 'M6 1″'),
-         ('filter', A + B + 150, 0, 1, '852 nm line filter'), ('filter', A + B + 185, 0, 1, '852 nm line filter'),
-         ('lens', A + B + 240, 0, 1, 40, 'L3  f=40 mm (or 50)'),
-         ('camera', A + B + 280, 0, 'qcmos', 'qCMOS C15550-22UP')]
-    def Bc(A, JOG, B): return [('mirror', A, 0, (1, 0), (0, 1), 2, 'M7 2″'), ('mirror', A, JOG, (0, 1), (1, 0), 2, 'M8 2″'),
-          ('lens', A + B, JOG, 2, 100, 'L4  f=100 mm'),
-          ('mirror', A + B + 110, JOG, (1, 0), (0, 1), 2, 'M9 2″'), ('mirror', A + B + 110, JOG + 100, (0, 1), (1, 0), 1, 'M10 1″'),
-          ('lens', A + B + 200, JOG + 100, 1, 40, 'L5  f=40 mm'),
-          ('camera', A + B + 240, JOG + 100, 'basler', 'Basler acA4029-29um')]
+    def Q(A, JOG, B):
+        t = Q_TAIL; u5 = A + B + t['L2_M5']; v6 = JOG - t['JOG2']; u_f1 = u5 + t['M6_F1']; u_f2 = u_f1 + t['F1_F2']; u_l3 = u_f2 + t['F2_L3']
+        return [('mirror', A, 0, (1, 0), (0, 1), 2, 'M3 2″'), ('mirror', A, JOG, (0, 1), (1, 0), 2, 'M4 2″'),
+                ('lens', A + B, JOG, 2, 150, 'L2  f=150 mm'),
+                ('mirror', u5, JOG, (1, 0), (0, -1), 2, 'M5 2″'), ('mirror', u5, v6, (0, -1), (1, 0), 1, 'M6 1″'),
+                ('filter', u_f1, v6, 1, '852 nm line filter'), ('filter', u_f2, v6, 1, '852 nm line filter'),
+                ('lens', u_l3, v6, 1, 40, 'L3  f=40 mm (or 50)'),
+                ('camera', u_l3 + t['L3_SENSOR'], v6, 'qcmos', 'qCMOS C15550-22UP')]
+    def Bc(A, JOG, B):
+        t = B_TAIL; u9 = A + B + t['L4_M9']; v10 = JOG + t['JOG2']; u_l5 = u9 + t['M10_L5']
+        return [('mirror', A, 0, (1, 0), (0, 1), 2, 'M7 2″'), ('mirror', A, JOG, (0, 1), (1, 0), 2, 'M8 2″'),
+                ('lens', A + B, JOG, 2, 100, 'L4  f=100 mm'),
+                ('mirror', u9, JOG, (1, 0), (0, 1), 2, 'M9 2″'), ('mirror', u9, v10, (0, 1), (1, 0), 1, 'M10 1″'),
+                ('lens', u_l5, v10, 1, 40, 'L5  f=40 mm'),
+                ('camera', u_l5 + t['L5_SENSOR'], v10, 'basler', 'Basler acA4029-29um')]
     def chain(spec, heading, tag):
         h = heading; l = (h[1], -h[0])
         G = lambda u, v: (DM[0] + u * h[0] + v * l[0], DM[1] + u * h[1] + v * l[1])

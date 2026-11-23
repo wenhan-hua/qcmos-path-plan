@@ -9,7 +9,7 @@ from cl_lib import *
 import optics_trace as O
 
 variant = sys.argv[5] if len(sys.argv) > 5 else 'default'
-NA = float(sys.argv[6]) if len(sys.argv) > 6 else 0.4
+NA = float(sys.argv[6]) if len(sys.argv) > 6 else O.DEFAULT_NA
 swapped = variant == 'swapped'
 res, a, LAY = O.full(swapped, NA)
 PPM = 1.35
@@ -20,12 +20,13 @@ Lb = Lib(sys.argv[2], sys.argv[3])
 pts = [(n['x'], n['z']) for k in res for n in res[k]]
 for k in 'TR':                                   # camera bodies extend ~170 mm behind the sensor plane
     rr = res[k]; s_ = rr[-1]; p_ = rr[-2]; d_ = math.hypot(s_['x'] - p_['x'], s_['z'] - p_['z']) or 1
-    pts.append((s_['x'] + 170 * (s_['x'] - p_['x']) / d_, s_['z'] + 170 * (s_['z'] - p_['z']) / d_))
+    body = 170 if s_.get('model') == 'qcmos' else 60
+    pts.append((s_['x'] + body * (s_['x'] - p_['x']) / d_, s_['z'] + body * (s_['z'] - p_['z']) / d_))
 X0, X1 = min(p[0] for p in pts) - 90, max(p[0] for p in pts) + 60
 Z0, Z1 = min(p[1] for p in pts) - 110, max(p[1] for p in pts) + 40
 LW, LH = (X1 - X0) * PPM, (Z1 - Z0) * PPM
 TABLE_H = 400
-W, H = int(LW + 40), int(LH + TABLE_H)
+W, H = int(max(LW + 40, 1560)), int(LH + TABLE_H)
 px = lambda x: (x - X0) * PPM + 20
 pz = lambda z: (z - Z0) * PPM + 10
 
@@ -183,10 +184,9 @@ def labels():
                 col = '#1a8f1a' if ok else ('#b06a00' if edge else '#d00000')
                 s_ = ('passes full FoV' if ok else f"max field ±{n['h_ok']:.2f} mm") if n['h_ok'] < 99 else 'passes full FoV'
                 text(X, Z + 14, s_, 11.5, anc, color=col)
-LABSIDE = {('L1', 'T'): -1, ('L1', 'R'): -1, ('L2', 'T'): -1, ('L2', 'R'): -1}
-LABOFF = {('M6', 'T'): (-28, 58, 'end'), ('M6', 'R'): (-28, 58, 'end'), ('M10', 'R'): (50, -40, 'start'), ('M10', 'T'): (50, -40, 'start'),
-          ('M3', 'T'): (45, -32, 'start'), ('M3', 'R'): (45, -32, 'start'),
-          ('M7', 'T'): (-45, -30, 'end'), ('M6', 'R'): (34, 48, 'start')}
+LABSIDE = {('L2', 'T'): -1, ('L2', 'R'): -1, ('Filter', 'T'): -1, ('Filter', 'R'): -1, ('L1', 'T'): -1, ('L1', 'R'): -1, ('L4', 'T'): -1, ('L5', 'T'): -1}
+LABOFF = {('M6', 'T'): (-34, 0, 'end'), ('M8', 'T'): (-40, 44, 'end'), ('M3', 'T'): (50, 6, 'start'), ('Filter', 'T'): (-10, 42, 'end'), ('M6', 'R'): (-34, 0, 'end'), ('Filter', 'R'): (46, 0, 'start'), ('M8', 'T'): (-45, -34, 'end'), ('M7', 'T'): (34, -44, 'start'),
+          ('M10', 'R'): (45, -10, 'start'), ('M10', 'T'): (40, -26, 'start'), ('M5', 'R'): (46, 10, 'start'), ('M4', 'T'): (-34, -34, 'end')}
 bars_done = aperture_bars(); labels()
 
 # ---- title / legend -------------------------------------------------------------------------------------------

@@ -1,6 +1,6 @@
 #!/bin/bash
 # Rebuild everything.   ./build.sh [diagrams|envelope|html|renders|all]     (default: diagrams + envelope + html)
-# envelope: NA=0.4 ./build.sh envelope   (objective NA assumed for the beam-size check)
+# envelope: NA=0.55 ./build.sh envelope   (objective NA assumed for the beam-size check)
 # Needs: python3 (stdlib only), Inkscape (set INKSCAPE=... if not in /Applications), Google Chrome (for 3D PNG renders).
 set -e
 cd "$(dirname "$0")"
@@ -23,7 +23,7 @@ envelope() {
   [ -f "$LIB" ] || ./fetch_library.sh
   for v in default swapped; do
     n=diagrams/beam_envelope_$v
-    python3 -I src/make_envelope.py "$PWD/src" "$LIB" "$INK" $n.svg $v ${NA:-0.4}
+    python3 -I src/make_envelope.py "$PWD/src" "$LIB" "$INK" $n.svg $v ${NA:-0.55}
     "$INK" --vacuum-defs --export-filename=$n.svg $n.svg >/dev/null 2>&1
     "$INK" --export-type=pdf --export-text-to-path $n.svg --export-filename=$n.pdf >/dev/null 2>&1
     "$INK" --export-type=png --export-width=2400 --export-background=white $n.svg --export-filename=$n.png >/dev/null 2>&1

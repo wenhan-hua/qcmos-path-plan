@@ -86,7 +86,7 @@ CH_Q = dict(name='qCMOS', els=[
     ('C', 790, 0, ['qCMOS', 'C15550-22UP', '18.8 × 10.6 mm', '4.6 µm pixel'])], end=790 - 35)
 CH_B = dict(name='Basler', els=[
     ('M', 165, 0, (1, 0), (0, 1), 2, ['M7', '2″']), ('M', 165, 140, (0, 1), (1, 0), 2, ['M8', '2″']),
-    ('L', 260, 140, 2, ['L4  f = 100 mm', '2″ lens (assumed)']),
+    ('L', 260, 140, 2, ['L4  f = 100 mm', '2″ lens']),
     ('M', 360, 140, (1, 0), (0, 1), 2, ['M9', '2″']), ('M', 360, 310, (0, 1), (1, 0), 1, ['M10', '1″']),
     ('L', 445, 310, 1, ['L5  f = 40 mm', '1″ lens']),
     ('C', 540, 310, ['Basler acA4029-29um', '7.5 × 5.6 mm', '1.85 µm pixel'])], end=540 - 40)
@@ -151,7 +151,7 @@ else:
 
 title = 'Single-atom tweezer imaging: beam-path plan  (' + ('ports swapped: qCMOS on R, Basler on T' if FLIP else 'qCMOS on T, Basler on R') + ')'
 t = E(txt, 'text', x=40, y=48, font_family=FONT, font_size=28, font_weight='bold'); t.text = title
-t = E(txt, 'text', x=40, y=72, font_family=FONT, font_size=14, fill='#555'); t.text = 'Rev. 2026-11-23: Basler relay lens L4 = 100 mm, last lens L5 = 40 mm.  Schematic, not to scale.  All beams at the static-objective height.  2″ optics drawn larger than 1″.'
+t = E(txt, 'text', x=40, y=72, font_family=FONT, font_size=14, fill='#555'); t.text = 'Rev. 2026-11-23 (compact): L4 = 100 mm, L5 = 40 mm, short front end.  Schematic (spacings: see box / 3D layout).  All beams at the static-objective height.  2″ optics drawn larger than 1″.'
 
 rows = [('Magnification  M = (150 / 10) × f(last) / f(relay)', 'b', '#000'),
  ('L1 = 150 mm focuses; the relay lens collimates', 'n', '#555'), ('', 'n', 0),
@@ -170,6 +170,13 @@ for s_, w, c in rows:
     if s_:
         t = E(txt, 'text', x=bx + 18, y=yy, font_family=FONT, font_size=14.5, fill=c, font_weight='bold' if w == 'b' else 'normal', xml_space='preserve'); t.text = s_
     yy += 25
+import check_layout
+kl = check_layout.summary_lines(FLIP)
+kh = 25 * (len(kl) + 1) - 5; kx, ky = 40, H - kh - 40
+E(bg, 'rect', x=kx, y=ky, width=405, height=kh, rx=14, fill='#fff', stroke='#999', stroke_width=1.2)
+t = E(txt, 'text', x=kx + 16, y=ky + 26, font_family=FONT, font_size=14.5, font_weight='bold'); t.text = 'Key spacings (beam path, mm; from the 3D layout)'
+for i, ln in enumerate(kl):
+    t = E(txt, 'text', x=kx + 16, y=ky + 52 + i * 22, font_family=FONT, font_size=12.5, fill='#1a6f1a' if ln.startswith('full') else '#222', xml_space='preserve'); t.text = ln
 t = E(txt, 'text', x=40, y=H - 18, font_family=FONT, font_size=11, fill='#777')
 t.text = 'Component glyphs: ComponentLibrary by Alexander Franzen, CC BY-NC 3.0 (gwoptics.org/ComponentLibrary).'
 ET.ElementTree(doc).write(sys.argv[4], xml_declaration=True, encoding='utf-8')

@@ -10,6 +10,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import layout
 
 F_OBJ = 10.0
+DEFAULT_NA = 0.55                                # user-confirmed objective NA (Ø11 mm collimated beam)
 PUPIL_X = 70.0                                   # back aperture of the objective, mm from the FoV (matches layout.py's objective)
 H_EDGE, H_CORNER = 0.5, 0.5 * math.sqrt(2)      # 1 x 1 mm FoV: half-side, half-diagonal
 CA_FRAC = 0.9                                    # Thorlabs: clear aperture >= 90 % of diameter
@@ -48,7 +49,7 @@ def walk(seq, st, s, pos, a):
         rows.append(r)
     return rows, st, s, pos
 
-def full(swapped, NA=0.4):
+def full(swapped, NA=DEFAULT_NA):
     L, common, ch = nodes(swapped)
     a = F_OBJ * NA
     # state at the exit pupil: marginal basis y=1, u=0 (collimated); field basis y=0 (chief through pupil centre), u=-1/f
@@ -69,7 +70,7 @@ def summary(res):
     return out
 
 if __name__ == '__main__':
-    NA = float(sys.argv[1]) if len(sys.argv) > 1 else 0.4
+    NA = float(sys.argv[1]) if len(sys.argv) > 1 else DEFAULT_NA
     for sw in (False, True):
         res, a, _ = full(sw, NA)
         print(f"\n=== {'swapped' if sw else 'default'}  NA={NA}  pupil radius a={a:.1f} mm ===")

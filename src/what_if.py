@@ -1,10 +1,11 @@
-"""What-if: re-run the beam-footprint trace for a *compact* front end on collinear (unfolded) distances.
+"""What-if: re-run the beam-footprint trace for alternative distances on collinear (unfolded) distances.
+The APPLIED scenario below is the one now in layout.py (check_layout.py checks the real layout).
 Folding mirrors do not change the footprints, only the path lengths matter.   usage: python3 -I what_if.py [NA]"""
 import sys, os
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import optics_trace as O
 
-NA = float(sys.argv[1]) if len(sys.argv) > 1 else 0.4
+NA = float(sys.argv[1]) if len(sys.argv) > 1 else O.DEFAULT_NA
 a = O.F_OBJ * NA
 
 def run(title, seq):
@@ -27,10 +28,10 @@ def chain(pupil_to_L1, m1, m2, tail, f_relay=150):
     return seq
 
 # current plan, unfolded distances (obj back aperture -> L1 = 425 mm; relay -> last lens = 325 mm)
-run('CURRENT (qCMOS branch): back aperture→L1 = 425 mm, L2→L3 = 325 mm, M6 and filters 1"',
+run('PREVIOUS layout (qCMOS branch): back aperture→L1 = 425 mm, L2→L3 = 325 mm, M6 and filters 1"',
     chain(425, 160, 310, [('M5', 'mirror', 2, 0, 110), ('M6', 'mirror', 1, 0, 85), ('F1', 'filter', 1, 0, 40), ('F2', 'filter', 1, 0, 35), ('L3', 'lens', 1, 40, 55), ('Sensor', 'sensor', 1, 0, 40)]))
 # compact: back aperture -> L1 = 200 mm, last lens 170 mm after L2
-run('COMPACT (qCMOS branch): back aperture→L1 = 200 mm (M1 +50, M2 +130), L2→L3 = 170 mm, same 1" parts',
-    chain(200, 50, 130, [('M5', 'mirror', 2, 0, 45), ('M6', 'mirror', 1, 0, 60), ('F1', 'filter', 1, 0, 20), ('F2', 'filter', 1, 0, 20), ('L3', 'lens', 1, 40, 25), ('Sensor', 'sensor', 1, 0, 40)]))
-run('COMPACT (Basler branch, relay L4 = 100 mm): back aperture→L1 = 200 mm, L4→L5 = 130 mm',
-    chain(200, 50, 130, [('M9', 'mirror', 2, 0, 40), ('M10', 'mirror', 1, 0, 75), ('L5', 'lens', 1, 40, 15), ('Sensor', 'sensor', 1, 0, 40)], f_relay=100))
+run('APPLIED (qCMOS branch): back aperture→L1 = 170 mm (M1 +55, M2 +115), L2→L3 = 180 mm',
+    chain(170, 55, 115, [('M5', 'mirror', 2, 0, 45), ('M6', 'mirror', 1, 0, 60), ('F1', 'filter', 1, 0, 30), ('F2', 'filter', 1, 0, 20), ('L3', 'lens', 1, 40, 25), ('Sensor', 'sensor', 1, 0, 40)]))
+run('APPLIED (Basler branch, relay L4 = 100 mm): back aperture→L1 = 170 mm, L4→L5 = 155 mm',
+    chain(170, 55, 115, [('M9', 'mirror', 2, 0, 45), ('M10', 'mirror', 1, 0, 75), ('L5', 'lens', 1, 40, 35), ('Sensor', 'sensor', 1, 0, 40)], f_relay=100))
