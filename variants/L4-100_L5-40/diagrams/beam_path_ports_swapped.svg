@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg
    width="1700"
-   height="1060"
-   viewBox="0 0 1700 1060"
+   height="1490"
+   viewBox="0 0 1700 1490"
    version="1.1"
    id="svg181"
-   sodipodi:docname="beam_path_ports_default.svg"
+   sodipodi:docname="beam_path_ports_swapped.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -337,28 +337,28 @@
      id="g10">
     <rect
        width="1700"
-       height="1060"
+       height="1490"
        fill="white"
        id="rect6" />
     <rect
-       x="842.0446609406727"
+       x="807.0446609406727"
        y="92"
-       width="776.1553390593274"
-       height="385"
+       width="580.1553390593274"
+       height="573.8553390593273"
        rx="22"
        fill="#e6eef6"
        id="rect7" />
     <rect
-       x="642.0446609406727"
-       y="490"
-       width="489.71067811865487"
-       height="486.25"
+       x="448.20000000000005"
+       y="685"
+       width="559.7553390593273"
+       height="755.0"
        rx="22"
        fill="#f7eddc"
        id="rect8" />
     <rect
        x="1230"
-       y="577"
+       y="1007"
        width="450"
        height="447"
        rx="14"
@@ -368,7 +368,7 @@
        id="rect9" />
     <rect
        x="40"
-       y="850"
+       y="1280"
        width="405"
        height="170"
        rx="14"
@@ -380,7 +380,7 @@
   <g
      id="g22">
     <path
-       d="M 85,175 L 370,175 L 370,365 L 730,365"
+       d="M 85,175 L 370,175 L 370,560 L 730,560"
        fill="none"
        stroke="#ee0000"
        stroke-width="2.6"
@@ -390,63 +390,63 @@
        fill="#ee0000"
        id="polygon10" />
     <polygon
-       points="370.0,277.0 364.0,264.0 376.0,264.0"
+       points="370.0,374.5 364.0,361.5 376.0,361.5"
        fill="#ee0000"
        id="polygon11" />
     <polygon
-       points="557.0,365.0 544.0,371.0 544.0,359.0"
+       points="557.0,560.0 544.0,566.0 544.0,554.0"
        fill="#ee0000"
        id="polygon12" />
     <path
-       d="M 730,365 L 930,365 L 930,175 L 1240,175 L 1240,365 L 1485,365"
+       d="M 730,560 L 895,560 L 895,420 L 1090,420 L 1090,250 L 1230,250"
        fill="none"
        stroke="#ee0000"
        stroke-width="2.6"
        id="path12" />
     <polygon
-       points="837.0,365.0 824.0,371.0 824.0,359.0"
+       points="819.5,560.0 806.5,566.0 806.5,554.0"
        fill="#ee0000"
        id="polygon13" />
     <polygon
-       points="930.0,263.0 936.0,276.0 924.0,276.0"
+       points="895.0,483.0 901.0,496.0 889.0,496.0"
        fill="#ee0000"
        id="polygon14" />
     <polygon
-       points="1092.0,175.0 1079.0,181.0 1079.0,169.0"
+       points="999.5,420.0 986.5,426.0 986.5,414.0"
        fill="#ee0000"
        id="polygon15" />
     <polygon
-       points="1240.0,277.0 1234.0,264.0 1246.0,264.0"
+       points="1090.0,328.0 1096.0,341.0 1084.0,341.0"
        fill="#ee0000"
        id="polygon16" />
     <polygon
-       points="1369.5,365.0 1356.5,371.0 1356.5,359.0"
+       points="1167.0,250.0 1154.0,256.0 1154.0,244.0"
        fill="#ee0000"
        id="polygon17" />
     <path
-       d="M 730,365 L 730,530 L 870,530 L 870,725 L 1040,725 L 1040,865"
+       d="M 730,560 L 730,760 L 920,760 L 920,1070 L 730,1070 L 730,1315"
        fill="none"
        stroke="#ee0000"
        stroke-width="2.6"
        id="path17" />
     <polygon
-       points="730.0,454.5 724.0,441.5 736.0,441.5"
+       points="730.0,667.0 724.0,654.0 736.0,654.0"
        fill="#ee0000"
        id="polygon18" />
     <polygon
-       points="807.0,530.0 794.0,536.0 794.0,524.0"
+       points="832.0,760.0 819.0,766.0 819.0,754.0"
        fill="#ee0000"
        id="polygon19" />
     <polygon
-       points="870.0,634.5 864.0,621.5 876.0,621.5"
+       points="920.0,922.0 914.0,909.0 926.0,909.0"
        fill="#ee0000"
        id="polygon20" />
     <polygon
-       points="962.0,725.0 949.0,731.0 949.0,719.0"
+       points="818.0,1070.0 831.0,1064.0 831.0,1076.0"
        fill="#ee0000"
        id="polygon21" />
     <polygon
-       points="1040.0,802.0 1034.0,789.0 1046.0,789.0"
+       points="730.0,1199.5 724.0,1186.5 736.0,1186.5"
        fill="#ee0000"
        id="polygon22" />
   </g>
@@ -526,10 +526,10 @@
        width="24.287999999999997"
        height="64.03199999999998"
        fill="white"
-       transform="translate(370,365) rotate(-225.0)"
+       transform="translate(370,560) rotate(-225.0)"
        id="rect29" />
     <g
-       transform="translate(370.00,365.00) rotate(-180.000) scale(2.3,2.3) translate(-534.392,-367.085)"
+       transform="translate(370.00,560.00) rotate(-180.000) scale(2.3,2.3) translate(-534.392,-367.085)"
        id="g33">
       <g
          style="display:inline"
@@ -560,7 +560,7 @@
       </g>
     </g>
     <g
-       transform="translate(560.00,365.00) rotate(0.000) scale(2.3,2.3) translate(-333.504,-786.558)"
+       transform="translate(560.00,560.00) rotate(0.000) scale(2.3,2.3) translate(-333.504,-786.558)"
        id="g35">
       <g
          style="display:inline"
@@ -577,7 +577,7 @@
       </g>
     </g>
     <g
-       transform="translate(730.00,365.00) rotate(-45.000) scale(2.3,2.3) translate(-346.972,-940.547)"
+       transform="translate(730.00,560.00) rotate(-45.000) scale(2.3,2.3) translate(-346.972,-940.547)"
        id="g38">
       <g
          style="display:inline"
@@ -605,10 +605,10 @@
        width="24.287999999999997"
        height="64.03199999999998"
        fill="white"
-       transform="translate(930,365) rotate(-315.0)"
+       transform="translate(895,560) rotate(-315.0)"
        id="rect38" />
     <g
-       transform="translate(930.00,365.00) rotate(-270.000) scale(2.3,2.3) translate(-534.392,-367.085)"
+       transform="translate(895.00,560.00) rotate(-270.000) scale(2.3,2.3) translate(-534.392,-367.085)"
        id="g42">
       <g
          style="display:inline"
@@ -644,10 +644,10 @@
        width="24.287999999999997"
        height="64.03199999999998"
        fill="white"
-       transform="translate(930,175) rotate(-135.0)"
+       transform="translate(895,420) rotate(-135.0)"
        id="rect42" />
     <g
-       transform="translate(930.00,175.00) rotate(-90.000) scale(2.3,2.3) translate(-534.392,-367.085)"
+       transform="translate(895.00,420.00) rotate(-90.000) scale(2.3,2.3) translate(-534.392,-367.085)"
        id="g46">
       <g
          style="display:inline"
@@ -678,7 +678,7 @@
       </g>
     </g>
     <g
-       transform="translate(1090.00,175.00) rotate(0.000) scale(2.3,2.3) translate(-333.504,-786.558)"
+       transform="translate(990.00,420.00) rotate(0.000) scale(2.3,2.3) translate(-333.504,-786.558)"
        id="g48">
       <g
          style="display:inline"
@@ -700,10 +700,10 @@
        width="24.287999999999997"
        height="64.03199999999998"
        fill="white"
-       transform="translate(1240,175) rotate(-45.0)"
+       transform="translate(1090,420) rotate(-315.0)"
        id="rect48" />
     <g
-       transform="translate(1240.00,175.00) rotate(0.000) scale(2.3,2.3) translate(-534.392,-367.085)"
+       transform="translate(1090.00,420.00) rotate(-270.000) scale(2.3,2.3) translate(-534.392,-367.085)"
        id="g52">
       <g
          style="display:inline"
@@ -739,10 +739,10 @@
        width="15.312"
        height="40.367999999999995"
        fill="white"
-       transform="translate(1240,365) rotate(-225.0)"
+       transform="translate(1090,250) rotate(-135.0)"
        id="rect52" />
     <g
-       transform="translate(1240.00,365.00) rotate(-180.000) scale(1.45,1.45) translate(-534.392,-367.085)"
+       transform="translate(1090.00,250.00) rotate(-90.000) scale(1.45,1.45) translate(-534.392,-367.085)"
        id="g56">
       <g
          style="display:inline"
@@ -773,88 +773,42 @@
       </g>
     </g>
     <g
-       transform="translate(1305.00,365.00) rotate(0.000) scale(2.07,2.07) translate(-331.300,-940.547)"
-       id="g59">
-      <g
-         style="display:inline"
-         i:rgbTrio="#4F008000FFFF"
-         i:dimmedPercent="50"
-         i:layer="yes"
-         transform="translate(325.965,925.9985)"
-         id="g58">
-        <g
-           id="g57">
-          <rect
-             height="28.346001"
-             width="9.9209995"
-             i:knockout="Off"
-             y="0.375"
-             x="0.375"
-             style="fill:url(#linearGradient3543);fill-opacity:1;stroke:black;stroke-width:0.75"
-             id="rect56" />
-        </g>
-      </g>
-    </g>
-    <g
-       transform="translate(1340.00,365.00) rotate(0.000) scale(2.07,2.07) translate(-331.300,-940.547)"
-       id="g62">
-      <g
-         style="display:inline"
-         i:rgbTrio="#4F008000FFFF"
-         i:dimmedPercent="50"
-         i:layer="yes"
-         transform="translate(325.965,925.9985)"
-         id="g61">
-        <g
-           id="g60">
-          <rect
-             height="28.346001"
-             width="9.9209995"
-             i:knockout="Off"
-             y="0.375"
-             x="0.375"
-             style="fill:url(#linearGradient3543);fill-opacity:1;stroke:black;stroke-width:0.75"
-             id="rect59" />
-        </g>
-      </g>
-    </g>
-    <g
-       transform="translate(1400.00,365.00) rotate(0.000) scale(1.45,1.45) translate(-333.504,-786.558)"
-       id="g64">
+       transform="translate(1175.00,250.00) rotate(0.000) scale(1.45,1.45) translate(-333.504,-786.558)"
+       id="g58">
       <g
          style="display:inline"
          i:rgbTrio="#4F008000FFFF"
          i:dimmedPercent="50"
          i:layer="yes"
          transform="translate(328.877,774.8448)"
-         id="g63">
+         id="g57">
         <path
            d="M 7.17,0.375 L 2.084,0.375 C 1.049,2.96 0.375,7.07 0.375,11.714 C 0.375,16.358 1.049,20.468 2.084,23.052 L 7.17,23.052 C 8.207,20.468 8.879,16.358 8.879,11.714 C 8.879,7.07 8.205,2.96 7.17,0.375 z "
            i:knockout="Off"
            style="fill:url(#linearGradient3754);fill-opacity:1;stroke:black;stroke-width:0.75"
-           id="path62" />
+           id="path56" />
       </g>
     </g>
     <g
-       transform="translate(1520.00,365.00) rotate(0.000) scale(2.0,2.0) translate(-730.449,-1417.321)"
-       id="g76">
+       transform="translate(1270.00,250.00) rotate(0.000) scale(2.0,2.0) translate(-730.449,-1417.321)"
+       id="g70">
       <g
          transform="translate(-10.828353,1199.4091)"
-         id="g75">
+         id="g69">
         <g
-           id="g74">
+           id="g68">
           <g
-             id="g73">
+             id="g67">
             <g
-               id="g72">
+               id="g66">
               <g
-                 id="g71">
+                 id="g65">
                 <g
-                   id="g70">
+                   id="g64">
                   <g
-                     id="g69">
+                     id="g63">
                     <g
-                       id="g68">
+                       id="g62">
                       <rect
                          height="31.88942"
                          width="9.749383"
@@ -862,7 +816,7 @@
                          y="201.96918"
                          x="727.0473"
                          style="fill:url(#linearGradient90095);fill-opacity:1;stroke:#000000;stroke-width:0.75000006"
-                         id="rect64" />
+                         id="rect58" />
                       <rect
                          height="31.88942"
                          width="2.786942"
@@ -870,16 +824,16 @@
                          y="201.96883"
                          x="735.96069"
                          style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0.75000006"
-                         id="rect65" />
+                         id="rect59" />
                       <path
                          d="M 738.0972,198.22937 C 738.3437,198.22896 738.58126,198.26556 738.80612,198.33244 L 738.81406,203.08493 C 738.58942,203.15231 738.35198,203.1897 738.10548,203.19012 C 736.73574,203.1924 735.62338,202.08401 735.62109,200.71401 C 735.6188,199.34401 736.72745,198.23166 738.0972,198.22937 L 738.0972,198.22937 z"
                          i:knockout="Off"
                          style="fill:url(#radialGradient90097);fill-opacity:1;stroke:#000000;stroke-width:0.18750003;display:inline;enable-background:new"
-                         id="path65" />
+                         id="path59" />
                       <g
                          transform="matrix(-1.4537553,0,0,1,1275.3081,-102.16504)"
                          style="fill:url(#linearGradient90103);fill-opacity:1;display:inline;enable-background:new"
-                         id="g67">
+                         id="g61">
                         <rect
                            height="42.519226"
                            width="9.749383"
@@ -888,7 +842,7 @@
                            x="-369.31003"
                            style="fill:url(#linearGradient90099);fill-opacity:1;stroke:#000000;stroke-width:0.6220361"
                            transform="scale(-1,1)"
-                           id="rect66" />
+                           id="rect60" />
                         <rect
                            height="42.519226"
                            width="2.786942"
@@ -897,13 +851,13 @@
                            x="-360.39667"
                            style="fill:url(#linearGradient90101);fill-opacity:1;stroke:#000000;stroke-width:0.6220361"
                            transform="scale(-1,1)"
-                           id="rect67" />
+                           id="rect61" />
                       </g>
                       <path
                          sodipodi:nodetypes="csccc"
                          d="M 735.7175,200.50851 C 735.7175,200.50851 735.8371,199.19327 736.85574,198.68888 C 737.54862,198.34579 737.46468,198.71211 737.46468,198.71211 L 737.38316,198.80927 C 737.38316,198.80927 736.07737,199.38762 735.7175,200.50851 z"
                          style="fill:url(#linearGradient90105);fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-                         id="path67" />
+                         id="path61" />
                       <path
                          transform="matrix(-0.587521,0,0,0.636048,867.32667,86.84179)"
                          d="M 220.84375,175.64062 A 0.28125,0.265625 0 1 1 220.28125,175.64062 A 0.28125,0.265625 0 1 1 220.84375,175.64062 z"
@@ -913,7 +867,7 @@
                          sodipodi:cx="220.5625"
                          style="fill:url(#linearGradient90107);fill-opacity:1;stroke:none;stroke-width:10;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
                          sodipodi:type="arc"
-                         id="path68" />
+                         id="path62" />
                     </g>
                   </g>
                 </g>
@@ -929,20 +883,20 @@
        width="24.287999999999997"
        height="64.03199999999998"
        fill="white"
-       transform="translate(730,530) rotate(-225.0)"
-       id="rect76" />
+       transform="translate(730,760) rotate(-225.0)"
+       id="rect70" />
     <g
-       transform="translate(730.00,530.00) rotate(-180.000) scale(2.3,2.3) translate(-534.392,-367.085)"
-       id="g80">
+       transform="translate(730.00,760.00) rotate(-180.000) scale(2.3,2.3) translate(-534.392,-367.085)"
+       id="g74">
       <g
          style="display:inline"
          i:rgbTrio="#4F008000FFFF"
          i:dimmedPercent="50"
          i:layer="yes"
          transform="matrix(0.707107,-0.707107,0.707107,0.707107,520.332,360.5704)"
-         id="g79">
+         id="g73">
         <g
-           id="g78">
+           id="g72">
           <rect
              height="28.346001"
              width="9.9209995"
@@ -950,7 +904,7 @@
              y="0.375"
              x="0.375"
              style="fill:url(#linearGradient7474);fill-opacity:1;stroke:black;stroke-width:0.75"
-             id="rect77" />
+             id="rect71" />
           <rect
              height="28.346001"
              width="2.836"
@@ -958,7 +912,7 @@
              y="0.375"
              x="7.46"
              style="stroke:black;stroke-width:0.75"
-             id="rect78" />
+             id="rect72" />
         </g>
       </g>
     </g>
@@ -968,10 +922,66 @@
        width="24.287999999999997"
        height="64.03199999999998"
        fill="white"
-       transform="translate(870,530) rotate(-45.0)"
+       transform="translate(920,760) rotate(-45.0)"
+       id="rect74" />
+    <g
+       transform="translate(920.00,760.00) rotate(0.000) scale(2.3,2.3) translate(-534.392,-367.085)"
+       id="g78">
+      <g
+         style="display:inline"
+         i:rgbTrio="#4F008000FFFF"
+         i:dimmedPercent="50"
+         i:layer="yes"
+         transform="matrix(0.707107,-0.707107,0.707107,0.707107,520.332,360.5704)"
+         id="g77">
+        <g
+           id="g76">
+          <rect
+             height="28.346001"
+             width="9.9209995"
+             i:knockout="Off"
+             y="0.375"
+             x="0.375"
+             style="fill:url(#linearGradient7474);fill-opacity:1;stroke:black;stroke-width:0.75"
+             id="rect75" />
+          <rect
+             height="28.346001"
+             width="2.836"
+             i:knockout="Off"
+             y="0.375"
+             x="7.46"
+             style="stroke:black;stroke-width:0.75"
+             id="rect76" />
+        </g>
+      </g>
+    </g>
+    <g
+       transform="translate(920.00,920.00) rotate(90.000) scale(2.3,2.3) translate(-333.504,-786.558)"
+       id="g80">
+      <g
+         style="display:inline"
+         i:rgbTrio="#4F008000FFFF"
+         i:dimmedPercent="50"
+         i:layer="yes"
+         transform="translate(328.877,774.8448)"
+         id="g79">
+        <path
+           d="M 7.17,0.375 L 2.084,0.375 C 1.049,2.96 0.375,7.07 0.375,11.714 C 0.375,16.358 1.049,20.468 2.084,23.052 L 7.17,23.052 C 8.207,20.468 8.879,16.358 8.879,11.714 C 8.879,7.07 8.205,2.96 7.17,0.375 z "
+           i:knockout="Off"
+           style="fill:url(#linearGradient3754);fill-opacity:1;stroke:black;stroke-width:0.75"
+           id="path78" />
+      </g>
+    </g>
+    <rect
+       x="-12.143999999999998"
+       y="-32.01599999999999"
+       width="24.287999999999997"
+       height="64.03199999999998"
+       fill="white"
+       transform="translate(920,1070) rotate(-315.0)"
        id="rect80" />
     <g
-       transform="translate(870.00,530.00) rotate(0.000) scale(2.3,2.3) translate(-534.392,-367.085)"
+       transform="translate(920.00,1070.00) rotate(-270.000) scale(2.3,2.3) translate(-534.392,-367.085)"
        id="g84">
       <g
          style="display:inline"
@@ -1001,43 +1011,26 @@
         </g>
       </g>
     </g>
-    <g
-       transform="translate(870.00,625.00) rotate(90.000) scale(2.3,2.3) translate(-333.504,-786.558)"
-       id="g86">
-      <g
-         style="display:inline"
-         i:rgbTrio="#4F008000FFFF"
-         i:dimmedPercent="50"
-         i:layer="yes"
-         transform="translate(328.877,774.8448)"
-         id="g85">
-        <path
-           d="M 7.17,0.375 L 2.084,0.375 C 1.049,2.96 0.375,7.07 0.375,11.714 C 0.375,16.358 1.049,20.468 2.084,23.052 L 7.17,23.052 C 8.207,20.468 8.879,16.358 8.879,11.714 C 8.879,7.07 8.205,2.96 7.17,0.375 z "
-           i:knockout="Off"
-           style="fill:url(#linearGradient3754);fill-opacity:1;stroke:black;stroke-width:0.75"
-           id="path84" />
-      </g>
-    </g>
     <rect
-       x="-12.143999999999998"
-       y="-32.01599999999999"
-       width="24.287999999999997"
-       height="64.03199999999998"
+       x="-7.656"
+       y="-20.183999999999997"
+       width="15.312"
+       height="40.367999999999995"
        fill="white"
-       transform="translate(870,725) rotate(-225.0)"
-       id="rect86" />
+       transform="translate(730,1070) rotate(-135.0)"
+       id="rect84" />
     <g
-       transform="translate(870.00,725.00) rotate(-180.000) scale(2.3,2.3) translate(-534.392,-367.085)"
-       id="g90">
+       transform="translate(730.00,1070.00) rotate(-90.000) scale(1.45,1.45) translate(-534.392,-367.085)"
+       id="g88">
       <g
          style="display:inline"
          i:rgbTrio="#4F008000FFFF"
          i:dimmedPercent="50"
          i:layer="yes"
          transform="matrix(0.707107,-0.707107,0.707107,0.707107,520.332,360.5704)"
-         id="g89">
+         id="g87">
         <g
-           id="g88">
+           id="g86">
           <rect
              height="28.346001"
              width="9.9209995"
@@ -1045,7 +1038,7 @@
              y="0.375"
              x="0.375"
              style="fill:url(#linearGradient7474);fill-opacity:1;stroke:black;stroke-width:0.75"
-             id="rect87" />
+             id="rect85" />
           <rect
              height="28.346001"
              width="2.836"
@@ -1053,27 +1046,42 @@
              y="0.375"
              x="7.46"
              style="stroke:black;stroke-width:0.75"
+             id="rect86" />
+        </g>
+      </g>
+    </g>
+    <g
+       transform="translate(730.00,1135.00) rotate(90.000) scale(2.07,2.07) translate(-331.300,-940.547)"
+       id="g91">
+      <g
+         style="display:inline"
+         i:rgbTrio="#4F008000FFFF"
+         i:dimmedPercent="50"
+         i:layer="yes"
+         transform="translate(325.965,925.9985)"
+         id="g90">
+        <g
+           id="g89">
+          <rect
+             height="28.346001"
+             width="9.9209995"
+             i:knockout="Off"
+             y="0.375"
+             x="0.375"
+             style="fill:url(#linearGradient3543);fill-opacity:1;stroke:black;stroke-width:0.75"
              id="rect88" />
         </g>
       </g>
     </g>
-    <rect
-       x="-7.656"
-       y="-20.183999999999997"
-       width="15.312"
-       height="40.367999999999995"
-       fill="white"
-       transform="translate(1040,725) rotate(-45.0)"
-       id="rect90" />
     <g
-       transform="translate(1040.00,725.00) rotate(0.000) scale(1.45,1.45) translate(-534.392,-367.085)"
+       transform="translate(730.00,1170.00) rotate(90.000) scale(2.07,2.07) translate(-331.300,-940.547)"
        id="g94">
       <g
          style="display:inline"
          i:rgbTrio="#4F008000FFFF"
          i:dimmedPercent="50"
          i:layer="yes"
-         transform="matrix(0.707107,-0.707107,0.707107,0.707107,520.332,360.5704)"
+         transform="translate(325.965,925.9985)"
          id="g93">
         <g
            id="g92">
@@ -1083,21 +1091,13 @@
              i:knockout="Off"
              y="0.375"
              x="0.375"
-             style="fill:url(#linearGradient7474);fill-opacity:1;stroke:black;stroke-width:0.75"
+             style="fill:url(#linearGradient3543);fill-opacity:1;stroke:black;stroke-width:0.75"
              id="rect91" />
-          <rect
-             height="28.346001"
-             width="2.836"
-             i:knockout="Off"
-             y="0.375"
-             x="7.46"
-             style="stroke:black;stroke-width:0.75"
-             id="rect92" />
         </g>
       </g>
     </g>
     <g
-       transform="translate(1040.00,810.00) rotate(90.000) scale(1.45,1.45) translate(-333.504,-786.558)"
+       transform="translate(730.00,1230.00) rotate(90.000) scale(1.45,1.45) translate(-333.504,-786.558)"
        id="g96">
       <g
          style="display:inline"
@@ -1114,7 +1114,7 @@
       </g>
     </g>
     <g
-       transform="translate(1040.00,905.00) rotate(90.000) scale(2.0,2.0) translate(-730.449,-1417.321)"
+       transform="translate(730.00,1350.00) rotate(90.000) scale(2.0,2.0) translate(-730.449,-1417.321)"
        id="g108">
       <g
          transform="translate(-10.828353,1199.4091)"
@@ -1257,7 +1257,7 @@
          id="tspan114">1″ or 2″</tspan></text>
     <text
        x="390"
-       y="420"
+       y="615"
        font-family="Helvetica, Arial, sans-serif"
        font-size="15"
        text-anchor="start"
@@ -1274,7 +1274,7 @@
          id="tspan116">2″</tspan></text>
     <text
        x="560"
-       y="425"
+       y="620"
        font-family="Helvetica, Arial, sans-serif"
        font-size="15"
        text-anchor="middle"
@@ -1290,301 +1290,301 @@
          font-size="12.75"
          id="tspan118">2″ lens</tspan></text>
     <text
-       x="965.3553390593273"
-       y="414.3553390593274"
+       x="930.3553390593273"
+       y="609.3553390593273"
        font-family="Helvetica, Arial, sans-serif"
        font-size="15"
        text-anchor="middle"
        fill="#000"
        id="text120"><tspan
-         x="965.3553390593273"
+         x="930.3553390593273"
          dy="0"
          font-weight="bold"
-         id="tspan119">M3</tspan><tspan
-         x="965.3553390593273"
+         id="tspan119">M7</tspan><tspan
+         x="930.3553390593273"
          dy="18.75"
          fill="#444"
          font-size="12.75"
          id="tspan120">2″</tspan></text>
     <text
-       x="894.6446609406727"
-       y="100.64466094067262"
+       x="859.6446609406727"
+       y="345.6446609406726"
        font-family="Helvetica, Arial, sans-serif"
        font-size="15"
        text-anchor="middle"
        fill="#000"
        id="text122"><tspan
-         x="894.6446609406727"
+         x="859.6446609406727"
          dy="0"
          font-weight="bold"
-         id="tspan121">M4</tspan><tspan
-         x="894.6446609406727"
+         id="tspan121">M8</tspan><tspan
+         x="859.6446609406727"
          dy="18.75"
          fill="#444"
          font-size="12.75"
          id="tspan122">2″</tspan></text>
     <text
-       x="1090"
-       y="251"
+       x="990"
+       y="496"
        font-family="Helvetica, Arial, sans-serif"
        font-size="15"
        text-anchor="middle"
        fill="#000"
        id="text124"><tspan
-         x="1090"
+         x="990"
          dy="0"
          font-weight="bold"
-         id="tspan123">L2  f = 150 mm</tspan><tspan
-         x="1090"
+         id="tspan123">L4  f = 100 mm</tspan><tspan
+         x="990"
          dy="18.75"
          fill="#444"
          font-size="12.75"
          id="tspan124">2″ lens</tspan></text>
     <text
-       x="1275.3553390593274"
-       y="100.64466094067262"
+       x="1125.3553390593274"
+       y="469.3553390593274"
        font-family="Helvetica, Arial, sans-serif"
        font-size="15"
        text-anchor="middle"
        fill="#000"
        id="text126"><tspan
-         x="1275.3553390593274"
+         x="1125.3553390593274"
          dy="0"
          font-weight="bold"
-         id="tspan125">M5</tspan><tspan
-         x="1275.3553390593274"
+         id="tspan125">M9</tspan><tspan
+         x="1125.3553390593274"
          dy="18.75"
          fill="#444"
          font-size="12.75"
          id="tspan126">2″</tspan></text>
     <text
-       x="1204.6446609406726"
-       y="414.3553390593274"
+       x="1054.6446609406726"
+       y="175.64466094067262"
        font-family="Helvetica, Arial, sans-serif"
        font-size="15"
        text-anchor="middle"
        fill="#000"
        id="text128"><tspan
-         x="1204.6446609406726"
+         x="1054.6446609406726"
          dy="0"
          font-weight="bold"
-         id="tspan127">M6</tspan><tspan
-         x="1204.6446609406726"
+         id="tspan127">M10</tspan><tspan
+         x="1054.6446609406726"
          dy="18.75"
          fill="#444"
          font-size="12.75"
          id="tspan128">1″</tspan></text>
     <text
-       x="1337"
-       y="264"
+       x="1175"
+       y="149"
        font-family="Helvetica, Arial, sans-serif"
        font-size="15"
        text-anchor="middle"
        fill="#000"
        id="text130"><tspan
-         x="1337"
+         x="1175"
          dy="0"
          font-weight="bold"
-         id="tspan129">852 nm line filters</tspan><tspan
-         x="1337"
+         id="tspan129">L5  f = 40 mm</tspan><tspan
+         x="1175"
          dy="18.75"
          fill="#444"
          font-size="12.75"
-         id="tspan130">≥ 1, last one before L3</tspan></text>
+         id="tspan130">1″ lens</tspan></text>
     <text
-       x="1400"
-       y="441"
+       x="1270"
+       y="326"
        font-family="Helvetica, Arial, sans-serif"
        font-size="15"
        text-anchor="middle"
        fill="#000"
        id="text133"><tspan
-         x="1400"
+         x="1270"
          dy="0"
          font-weight="bold"
-         id="tspan131">L3  f = 40 mm</tspan><tspan
-         x="1400"
+         id="tspan131">Basler acA4029-29um</tspan><tspan
+         x="1270"
          dy="18.75"
          fill="#444"
          font-size="12.75"
-         id="tspan132">(or 50 mm)</tspan><tspan
-         x="1400"
+         id="tspan132">7.5 × 5.6 mm</tspan><tspan
+         x="1270"
          dy="18.75"
          fill="#444"
          font-size="12.75"
-         id="tspan133">1″ lens</tspan></text>
+         id="tspan133">1.85 µm pixel</tspan></text>
     <text
-       x="1520"
-       y="238"
+       x="694.6446609406727"
+       y="809.3553390593273"
+       font-family="Helvetica, Arial, sans-serif"
+       font-size="15"
+       text-anchor="middle"
+       fill="#000"
+       id="text135"><tspan
+         x="694.6446609406727"
+         dy="0"
+         font-weight="bold"
+         id="tspan134">M3</tspan><tspan
+         x="694.6446609406727"
+         dy="18.75"
+         fill="#444"
+         font-size="12.75"
+         id="tspan135">2″</tspan></text>
+    <text
+       x="955.3553390593273"
+       y="685.6446609406727"
        font-family="Helvetica, Arial, sans-serif"
        font-size="15"
        text-anchor="middle"
        fill="#000"
        id="text137"><tspan
-         x="1520"
+         x="955.3553390593273"
          dy="0"
          font-weight="bold"
-         id="tspan134">qCMOS</tspan><tspan
-         x="1520"
+         id="tspan136">M4</tspan><tspan
+         x="955.3553390593273"
          dy="18.75"
          fill="#444"
          font-size="12.75"
-         id="tspan135">C15550-22UP</tspan><tspan
-         x="1520"
-         dy="18.75"
-         fill="#444"
-         font-size="12.75"
-         id="tspan136">18.8 × 10.6 mm</tspan><tspan
-         x="1520"
-         dy="18.75"
-         fill="#444"
-         font-size="12.75"
-         id="tspan137">4.6 µm pixel</tspan></text>
+         id="tspan137">2″</tspan></text>
     <text
-       x="694.6446609406727"
-       y="579.3553390593273"
+       x="858"
+       y="916"
+       font-family="Helvetica, Arial, sans-serif"
+       font-size="15"
+       text-anchor="end"
+       fill="#000"
+       id="text139"><tspan
+         x="858"
+         dy="0"
+         font-weight="bold"
+         id="tspan138">L2  f = 150 mm</tspan><tspan
+         x="858"
+         dy="18.75"
+         fill="#444"
+         font-size="12.75"
+         id="tspan139">2″ lens</tspan></text>
+    <text
+       x="955.3553390593273"
+       y="1119.3553390593274"
        font-family="Helvetica, Arial, sans-serif"
        font-size="15"
        text-anchor="middle"
        fill="#000"
-       id="text139"><tspan
-         x="694.6446609406727"
-         dy="0"
-         font-weight="bold"
-         id="tspan138">M7</tspan><tspan
-         x="694.6446609406727"
-         dy="18.75"
-         fill="#444"
-         font-size="12.75"
-         id="tspan139">2″</tspan></text>
-    <text
-       x="918.0"
-       y="548.0"
-       font-family="Helvetica, Arial, sans-serif"
-       font-size="15"
-       text-anchor="start"
-       fill="#000"
        id="text141"><tspan
-         x="918.0"
+         x="955.3553390593273"
          dy="0"
          font-weight="bold"
-         id="tspan140">M8</tspan><tspan
-         x="918.0"
+         id="tspan140">M5</tspan><tspan
+         x="955.3553390593273"
          dy="18.75"
          fill="#444"
          font-size="12.75"
          id="tspan141">2″</tspan></text>
     <text
-       x="808"
-       y="621"
+       x="694.6446609406727"
+       y="995.6446609406726"
        font-family="Helvetica, Arial, sans-serif"
        font-size="15"
-       text-anchor="end"
+       text-anchor="middle"
        fill="#000"
        id="text143"><tspan
-         x="808"
+         x="694.6446609406727"
          dy="0"
          font-weight="bold"
-         id="tspan142">L4  f = 100 mm</tspan><tspan
-         x="808"
+         id="tspan142">M6</tspan><tspan
+         x="694.6446609406727"
          dy="18.75"
          fill="#444"
          font-size="12.75"
-         id="tspan143">2″ lens</tspan></text>
+         id="tspan143">1″</tspan></text>
     <text
-       x="834.6446609406727"
-       y="774.3553390593273"
+       x="668"
+       y="1163"
        font-family="Helvetica, Arial, sans-serif"
        font-size="15"
-       text-anchor="middle"
+       text-anchor="end"
        fill="#000"
        id="text145"><tspan
-         x="834.6446609406727"
+         x="668"
          dy="0"
          font-weight="bold"
-         id="tspan144">M9</tspan><tspan
-         x="834.6446609406727"
+         id="tspan144">852 nm line filters</tspan><tspan
+         x="668"
          dy="18.75"
          fill="#444"
          font-size="12.75"
-         id="tspan145">2″</tspan></text>
+         id="tspan145">≥ 1, last one before L3</tspan></text>
     <text
-       x="1075.3553390593274"
-       y="650.6446609406727"
-       font-family="Helvetica, Arial, sans-serif"
-       font-size="15"
-       text-anchor="middle"
-       fill="#000"
-       id="text147"><tspan
-         x="1075.3553390593274"
-         dy="0"
-         font-weight="bold"
-         id="tspan146">M10</tspan><tspan
-         x="1075.3553390593274"
-         dy="18.75"
-         fill="#444"
-         font-size="12.75"
-         id="tspan147">1″</tspan></text>
-    <text
-       x="978"
-       y="806"
+       x="668"
+       y="1226"
        font-family="Helvetica, Arial, sans-serif"
        font-size="15"
        text-anchor="end"
        fill="#000"
-       id="text149"><tspan
-         x="978"
+       id="text148"><tspan
+         x="668"
          dy="0"
          font-weight="bold"
-         id="tspan148">L5  f = 40 mm</tspan><tspan
-         x="978"
+         id="tspan146">L3  f = 40 mm</tspan><tspan
+         x="668"
          dy="18.75"
          fill="#444"
          font-size="12.75"
-         id="tspan149">1″ lens</tspan></text>
+         id="tspan147">(or 50 mm)</tspan><tspan
+         x="668"
+         dy="18.75"
+         fill="#444"
+         font-size="12.75"
+         id="tspan148">1″ lens</tspan></text>
     <text
-       x="978"
-       y="901"
+       x="792"
+       y="1346"
        font-family="Helvetica, Arial, sans-serif"
        font-size="15"
-       text-anchor="end"
+       text-anchor="start"
        fill="#000"
        id="text152"><tspan
-         x="978"
+         x="792"
          dy="0"
          font-weight="bold"
-         id="tspan150">Basler acA4029-29um</tspan><tspan
-         x="978"
+         id="tspan149">qCMOS</tspan><tspan
+         x="792"
          dy="18.75"
          fill="#444"
          font-size="12.75"
-         id="tspan151">7.5 × 5.6 mm</tspan><tspan
-         x="978"
+         id="tspan150">C15550-22UP</tspan><tspan
+         x="792"
          dy="18.75"
          fill="#444"
          font-size="12.75"
-         id="tspan152">1.85 µm pixel</tspan></text>
+         id="tspan151">18.8 × 10.6 mm</tspan><tspan
+         x="792"
+         dy="18.75"
+         fill="#444"
+         font-size="12.75"
+         id="tspan152">4.6 µm pixel</tspan></text>
     <text
-       x="1596.2"
+       x="1365.2"
        y="122"
        text-anchor="end"
        font-family="Helvetica, Arial, sans-serif"
        font-size="17"
        font-weight="bold"
        fill="#555"
-       id="text153">Transmitted path  →  qCMOS</text>
+       id="text153">Transmitted path  →  Basler</text>
     <text
-       x="664.0446609406727"
-       y="960.25"
+       x="470.20000000000005"
+       y="1424.0"
        text-anchor="start"
        font-family="Helvetica, Arial, sans-serif"
        font-size="17"
        font-weight="bold"
        fill="#555"
-       id="text154">Reflected path  →  Basler</text>
+       id="text154">Reflected path  →  qCMOS</text>
     <text
        x="690"
-       y="280"
+       y="475"
        font-family="Helvetica, Arial, sans-serif"
        font-size="15"
        text-anchor="middle"
@@ -1593,34 +1593,34 @@
          x="690"
          dy="0"
          font-weight="bold"
-         id="tspan154">Thorlabs DMSP1000L (2″ shortpass)</tspan><tspan
+         id="tspan154">Longpass dichroic (2″), ports swapped</tspan><tspan
          x="690"
          dy="18.75"
          fill="#444"
          font-size="12.75"
-         id="tspan155">T: 852 nm  ·  R: 1030 nm (mostly)</tspan><tspan
+         id="tspan155">R: 852 nm  ·  T: 1030 nm</tspan><tspan
          x="690"
          dy="18.75"
          fill="#444"
          font-size="12.75"
-         id="tspan156">1000 nm cutoff</tspan></text>
+         id="tspan156">hypothetical: not the DMSP1000L</tspan></text>
     <text
        x="40"
        y="48"
        font-family="Helvetica, Arial, sans-serif"
        font-size="28"
        font-weight="bold"
-       id="text157">Single-atom tweezer imaging: beam-path plan  (qCMOS on T, Basler on R)</text>
+       id="text157">Single-atom tweezer imaging: beam-path plan  (ports swapped: qCMOS on R, Basler on T)</text>
     <text
        x="40"
        y="72"
        font-family="Helvetica, Arial, sans-serif"
        font-size="14"
        fill="#555"
-       id="text158">Rev. 2026-11-23 (compact): L4 = 100 mm, L5 = 40 mm, short front end.  Schematic (spacings: see box / 3D layout).  All beams at the static-objective height.  2″ optics drawn larger than 1″.</text>
+       id="text158">Rev. 2026-11-23 (compact), variant L4 = 100 mm / L5 = 40 mm.  Schematic (spacings: see box / 3D layout).  All beams at the static-objective height.  2″ optics drawn larger than 1″.</text>
     <text
        x="1248"
-       y="611"
+       y="1041"
        font-family="Helvetica, Arial, sans-serif"
        font-size="14.5"
        fill="#000"
@@ -1629,7 +1629,7 @@
        id="text159">Magnification  M = (150 / 10) × f(last) / f(relay)</text>
     <text
        x="1248"
-       y="636"
+       y="1066"
        font-family="Helvetica, Arial, sans-serif"
        font-size="14.5"
        fill="#555"
@@ -1638,7 +1638,7 @@
        id="text160">L1 = 150 mm focuses; the relay lens collimates</text>
     <text
        x="1248"
-       y="686"
+       y="1116"
        font-family="Helvetica, Arial, sans-serif"
        font-size="14.5"
        fill="#000"
@@ -1647,7 +1647,7 @@
        id="text161">qCMOS  (18.8 × 10.6 mm, 4.6 µm px),  relay L2 = 150</text>
     <text
        x="1248"
-       y="711"
+       y="1141"
        font-family="Helvetica, Arial, sans-serif"
        font-size="14.5"
        fill="#000"
@@ -1656,7 +1656,7 @@
        id="text162">L3 = 40 mm:  M = 4.0×  (preferred)</text>
     <text
        x="1248"
-       y="736"
+       y="1166"
        font-family="Helvetica, Arial, sans-serif"
        font-size="14.5"
        fill="#555"
@@ -1665,7 +1665,7 @@
        id="text163">   1 µm waist → 4.0 µm = 0.87 px</text>
     <text
        x="1248"
-       y="761"
+       y="1191"
        font-family="Helvetica, Arial, sans-serif"
        font-size="14.5"
        fill="#2a7a2a"
@@ -1674,7 +1674,7 @@
        id="text164">   FoV 1 mm → 4.0 mm: fits</text>
     <text
        x="1248"
-       y="786"
+       y="1216"
        font-family="Helvetica, Arial, sans-serif"
        font-size="14.5"
        fill="#000"
@@ -1683,7 +1683,7 @@
        id="text165">L3 = 50 mm:  M = 5.0×</text>
     <text
        x="1248"
-       y="811"
+       y="1241"
        font-family="Helvetica, Arial, sans-serif"
        font-size="14.5"
        fill="#555"
@@ -1692,7 +1692,7 @@
        id="text166">   1 µm waist → 5.0 µm = 1.09 px</text>
     <text
        x="1248"
-       y="836"
+       y="1266"
        font-family="Helvetica, Arial, sans-serif"
        font-size="14.5"
        fill="#2a7a2a"
@@ -1701,7 +1701,7 @@
        id="text167">   FoV 1 mm → 5.0 mm: fits</text>
     <text
        x="1248"
-       y="886"
+       y="1316"
        font-family="Helvetica, Arial, sans-serif"
        font-size="14.5"
        fill="#000"
@@ -1710,7 +1710,7 @@
        id="text168">Basler  (7.5 × 5.6 mm, 1.85 µm px),  relay L4 = 100</text>
     <text
        x="1248"
-       y="911"
+       y="1341"
        font-family="Helvetica, Arial, sans-serif"
        font-size="14.5"
        fill="#000"
@@ -1719,7 +1719,7 @@
        id="text169">L5 = 40 mm:  M = 6.0×  (0.31 µm / px)</text>
     <text
        x="1248"
-       y="936"
+       y="1366"
        font-family="Helvetica, Arial, sans-serif"
        font-size="14.5"
        fill="#b06a00"
@@ -1728,7 +1728,7 @@
        id="text170">   FoV 1 mm → 6.0 mm: 7% over the 5.6 mm height</text>
     <text
        x="1248"
-       y="961"
+       y="1391"
        font-family="Helvetica, Arial, sans-serif"
        font-size="14.5"
        fill="#b06a00"
@@ -1737,7 +1737,7 @@
        id="text171">   usable FoV 1.25 × 0.93 mm</text>
     <text
        x="1248"
-       y="986"
+       y="1416"
        font-family="Helvetica, Arial, sans-serif"
        font-size="14.5"
        fill="#555"
@@ -1746,23 +1746,23 @@
        id="text172">   full 1 mm FoV needs f(L5) ≤ 37 mm</text>
     <text
        x="1248"
-       y="1011"
+       y="1441"
        font-family="Helvetica, Arial, sans-serif"
        font-size="14.5"
        fill="#555"
        font-weight="normal"
        xml-space="preserve"
-       id="text173">   (35 mm → 5.25×, 0.35 µm / px, fits)</text>
+       id="text173">   (35.0 mm → 5.25×, 0.35 µm / px, fits)</text>
     <text
        x="56"
-       y="876"
+       y="1306"
        font-family="Helvetica, Arial, sans-serif"
        font-size="14.5"
        font-weight="bold"
        id="text174">Key spacings (beam path, mm; from the 3D layout)</text>
     <text
        x="56"
-       y="902"
+       y="1332"
        font-family="Helvetica, Arial, sans-serif"
        font-size="12.5"
        fill="#222"
@@ -1770,39 +1770,39 @@
        id="text175">obj back aperture → L1:  170  (must be ≥ 150)</text>
     <text
        x="56"
-       y="924"
+       y="1354"
        font-family="Helvetica, Arial, sans-serif"
        font-size="12.5"
        fill="#222"
        xml-space="preserve"
-       id="text176">qCMOS:  L1 → relay 150 mm: 300  (= 150 + 150)</text>
+       id="text176">Basler:  L1 → relay 100 mm: 250  (= 150 + 100)</text>
     <text
        x="56"
-       y="946"
+       y="1376"
        font-family="Helvetica, Arial, sans-serif"
        font-size="12.5"
        fill="#222"
        xml-space="preserve"
-       id="text177">          relay → last lens f=40: 180   ·   last lens → sensor: 40</text>
+       id="text177">          relay → last lens f=40: 155   ·   last lens → sensor: 40</text>
     <text
        x="56"
-       y="968"
+       y="1398"
        font-family="Helvetica, Arial, sans-serif"
        font-size="12.5"
        fill="#222"
        xml-space="preserve"
-       id="text178">Basler:  L1 → relay 100 mm: 250  (= 150 + 100)</text>
+       id="text178">qCMOS:  L1 → relay 150 mm: 300  (= 150 + 150)</text>
     <text
        x="56"
-       y="990"
+       y="1420"
        font-family="Helvetica, Arial, sans-serif"
        font-size="12.5"
        fill="#222"
        xml-space="preserve"
-       id="text179">          relay → last lens f=40: 155   ·   last lens → sensor: 40</text>
+       id="text179">          relay → last lens f=40: 180   ·   last lens → sensor: 40</text>
     <text
        x="56"
-       y="1012"
+       y="1442"
        font-family="Helvetica, Arial, sans-serif"
        font-size="12.5"
        fill="#1a6f1a"
@@ -1810,7 +1810,7 @@
        id="text180">full 1×1 mm field passes all optics (NA 0.55); tightest: DM ±0.75 mm</text>
     <text
        x="40"
-       y="1042"
+       y="1472"
        font-family="Helvetica, Arial, sans-serif"
        font-size="11"
        fill="#777"

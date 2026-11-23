@@ -3,21 +3,36 @@ Top view: x to the right, y 'south' (down the page).  Beam height above table is
 Spacings obey the optics: obj collimates, L1 focuses, L1 -> relay lens = f(L1) + f(relay), last lens -> sensor = f.
 Compact front end + short post-relay legs keep the 1x1 mm field unvignetted (see optics_trace.py / check_layout.py).
 The objective back aperture (exit pupil) is at x = 70 mm; obj back -> L1 must be >= 150 mm (here 170 mm of beam path)."""
-import json, math
+import json, math, os
 
 D_L1_DM = 45
 OBJ_BACK = 70                                   # objective body spans x = 8 .. 70 mm (FoV at x = 0)
 OBJ_TO_M1, M1_TO_M2, M2_TO_L1 = 55, 60, 55      # beam path after the back aperture: 55 + 60 + 55 = 170 mm  (>= 150 mm required)
 # legs after the relay lens (beam path, mm) -- kept short so the field-angle walk-off stays inside the 1'' parts
 Q_TAIL = dict(L2_M5=45, JOG2=60, M6_F1=30, F1_F2=20, F2_L3=25, L3_SENSOR=40)      # qCMOS branch  (L2 -> L3 = 180)
-B_TAIL = dict(L4_M9=45, JOG2=75, M10_L5=35, L5_SENSOR=40)                          # Basler branch (L4 -> L5 = 155)
 # Relay rule: the intermediate image sits f(L1)=150 mm after L1; the relay lens collimates it, so
-#   L1 -> relay lens = 150 + f(relay).   T chain (qCMOS) relay L2 = 150 mm -> 300 mm ;  Basler chain relay L4 = 100 mm -> 250 mm.
-RELAY_TOTAL = {'Q': 150 + 150, 'B': 150 + 100}
+#   L1 -> relay lens = 150 + f(relay).
+# ---- variants: only the Basler branch differs (relay lens L4 and last lens L5) ------------------------------------------
+VARIANTS = {
+    # current plan: M = 150/10 * 40/100 = 6x ; L4 -> L5 = 155 mm
+    'L4-100_L5-40': dict(f_L4=100, f_L5=40, L4_size=2, L5_size=1, M9_size=2, M10_size=1,
+                         B_PARAMS={'R': (70, 75, 60), 'T': (80, 75, 50)},
+                         B_TAIL=dict(L4_M9=45, JOG2=75, M10_L5=35, L5_SENSOR=40)),
+    # trial: M = 150/10 * 100/250 = 6x again; relay L1 -> L4 = 400 mm and a wider collimated beam (Ø18 mm) after L4 -> M9/M10 must be 2'' (1'' M10 clips); L5 can stay 1''
+    'L4-250_L5-100': dict(f_L4=250, f_L5=100, L4_size=2, L5_size=1, M9_size=2, M10_size=2,
+                          B_PARAMS={'R': (70, 75, 210), 'T': (80, 75, 200)},
+                          B_TAIL=dict(L4_M9=60, JOG2=80, M10_L5=60, L5_SENSOR=100)),
+}
+DEFAULT_VARIANT = 'L4-100_L5-40'
+VARIANT = os.environ.get('QVARIANT', DEFAULT_VARIANT)
+CUR = VARIANTS[VARIANT]
+RELAY_TOTAL = {'Q': 150 + 150, 'B': 150 + CUR['f_L4']}
 # (A, JOG, B) per (chain, port): DM->first fold mirror, jog length, second fold mirror -> relay lens.
 # Chosen so that D + A + JOG + B = RELAY_TOTAL and the 2'' mounts of the two ports clear each other.
-PARAMS = {('Q', 'T'): (120, 85, 50), ('B', 'R'): (70, 75, 60), ('B', 'T'): (80, 75, 50), ('Q', 'R'): (80, 130, 45)}
-for (_c, _p), (_a, _j, _b) in PARAMS.items(): assert D_L1_DM + _a + _j + _b == RELAY_TOTAL[_c], (_c, _p)
+PARAMS = {('Q', 'T'): (120, 85, 50), ('Q', 'R'): (80, 130, 45),
+          ('B', 'T'): CUR['B_PARAMS']['T'], ('B', 'R'): CUR['B_PARAMS']['R']}
+for (_c, _p), (_a, _j, _b) in PARAMS.items(): assert D_L1_DM + _a + _j + _b == RELAY_TOTAL[_c], (_c, _p, VARIANT)
+B_TAIL = CUR['B_TAIL']
 
 def unit(v):
     m = math.hypot(*v); return (v[0] / m, v[1] / m)
@@ -46,11 +61,12 @@ def build(swapped):
                 ('lens', u_l3, v6, 1, 40, 'L3  f=40 mm (or 50)'),
                 ('camera', u_l3 + t['L3_SENSOR'], v6, 'qcmos', 'qCMOS C15550-22UP')]
     def Bc(A, JOG, B):
-        t = B_TAIL; u9 = A + B + t['L4_M9']; v10 = JOG + t['JOG2']; u_l5 = u9 + t['M10_L5']
+        t = B_TAIL; c = CUR; u9 = A + B + t['L4_M9']; v10 = JOG + t['JOG2']; u_l5 = u9 + t['M10_L5']
         return [('mirror', A, 0, (1, 0), (0, 1), 2, 'M7 2″'), ('mirror', A, JOG, (0, 1), (1, 0), 2, 'M8 2″'),
-                ('lens', A + B, JOG, 2, 100, 'L4  f=100 mm'),
-                ('mirror', u9, JOG, (1, 0), (0, 1), 2, 'M9 2″'), ('mirror', u9, v10, (0, 1), (1, 0), 1, 'M10 1″'),
-                ('lens', u_l5, v10, 1, 40, 'L5  f=40 mm'),
+                ('lens', A + B, JOG, c['L4_size'], c['f_L4'], 'L4  f=%g mm' % c['f_L4']),
+                ('mirror', u9, JOG, (1, 0), (0, 1), c['M9_size'], 'M9 %d″' % c['M9_size']),
+                ('mirror', u9, v10, (0, 1), (1, 0), c['M10_size'], 'M10 %d″' % c['M10_size']),
+                ('lens', u_l5, v10, c['L5_size'], c['f_L5'], 'L5  f=%g mm' % c['f_L5']),
                 ('camera', u_l5 + t['L5_SENSOR'], v10, 'basler', 'Basler acA4029-29um')]
     def chain(spec, heading, tag):
         h = heading; l = (h[1], -h[0])

@@ -5,6 +5,8 @@ usage: python3 -I make_diagram_flip.py <script_dir> <ComponentLibrary.svg> <inks
 import sys, math, re
 sys.path.insert(0, sys.argv[1])
 from cl_lib import *
+import layout as LY
+C_ = LY.CUR; F4, F5 = C_['f_L4'], C_['f_L5']
 FLIP = len(sys.argv) > 5 and sys.argv[5] == 'flip'
 
 L = Lib(sys.argv[2], sys.argv[3])
@@ -86,9 +88,9 @@ CH_Q = dict(name='qCMOS', els=[
     ('C', 790, 0, ['qCMOS', 'C15550-22UP', '18.8 × 10.6 mm', '4.6 µm pixel'])], end=790 - 35)
 CH_B = dict(name='Basler', els=[
     ('M', 165, 0, (1, 0), (0, 1), 2, ['M7', '2″']), ('M', 165, 140, (0, 1), (1, 0), 2, ['M8', '2″']),
-    ('L', 260, 140, 2, ['L4  f = 100 mm', '2″ lens']),
-    ('M', 360, 140, (1, 0), (0, 1), 2, ['M9', '2″']), ('M', 360, 310, (0, 1), (1, 0), 1, ['M10', '1″']),
-    ('L', 445, 310, 1, ['L5  f = 40 mm', '1″ lens']),
+    ('L', 260, 140, C_['L4_size'], ['L4  f = %g mm' % F4, '%d″ lens' % C_['L4_size']]),
+    ('M', 360, 140, (1, 0), (0, 1), C_['M9_size'], ['M9', '%d″' % C_['M9_size']]), ('M', 360, 310, (0, 1), (1, 0), C_['M10_size'], ['M10', '%d″' % C_['M10_size']]),
+    ('L', 445, 310, C_['L5_size'], ['L5  f = %g mm' % F5, '%d″ lens' % C_['L5_size']]),
     ('C', 540, 310, ['Basler acA4029-29um', '7.5 × 5.6 mm', '1.85 µm pixel'])], end=540 - 40)
 
 SIDES = {('qCMOS', 'T'): dict(L2='r', F='l', L3='r', C='l'), ('qCMOS', 'R'): dict(L2='r', F='r', L3='r', C='l'),
@@ -151,18 +153,25 @@ else:
 
 title = 'Single-atom tweezer imaging: beam-path plan  (' + ('ports swapped: qCMOS on R, Basler on T' if FLIP else 'qCMOS on T, Basler on R') + ')'
 t = E(txt, 'text', x=40, y=48, font_family=FONT, font_size=28, font_weight='bold'); t.text = title
-t = E(txt, 'text', x=40, y=72, font_family=FONT, font_size=14, fill='#555'); t.text = 'Rev. 2026-11-23 (compact): L4 = 100 mm, L5 = 40 mm, short front end.  Schematic (spacings: see box / 3D layout).  All beams at the static-objective height.  2″ optics drawn larger than 1″.'
+t = E(txt, 'text', x=40, y=72, font_family=FONT, font_size=14, fill='#555'); t.text = 'Rev. 2026-11-23 (compact), variant L4 = %g mm / L5 = %g mm.  Schematic (spacings: see box / 3D layout).  All beams at the static-objective height.  2″ optics drawn larger than 1″.' % (F4, F5)
 
 rows = [('Magnification  M = (150 / 10) × f(last) / f(relay)', 'b', '#000'),
  ('L1 = 150 mm focuses; the relay lens collimates', 'n', '#555'), ('', 'n', 0),
  ('qCMOS  (18.8 × 10.6 mm, 4.6 µm px),  relay L2 = 150', 'b', '#000'),
  ('L3 = 40 mm:  M = 4.0×  (preferred)', 'n', '#000'), ('   1 µm waist → 4.0 µm = 0.87 px', 'n', '#555'),
  ('   FoV 1 mm → 4.0 mm: fits', 'n', '#2a7a2a'), ('L3 = 50 mm:  M = 5.0×', 'n', '#000'), ('   1 µm waist → 5.0 µm = 1.09 px', 'n', '#555'),
- ('   FoV 1 mm → 5.0 mm: fits', 'n', '#2a7a2a'), ('', 'n', 0),
- ('Basler  (7.5 × 5.6 mm, 1.85 µm px),  relay L4 = 100', 'b', '#000'),
- ('L5 = 40 mm:  M = 6.0×  (0.31 µm / px)', 'n', '#000'),
- ('   FoV 1 mm → 6.0 mm: 7% over the 5.6 mm height', 'n', '#b06a00'), ('   usable FoV 1.25 × 0.93 mm', 'n', '#b06a00'),
- ('   full 1 mm FoV needs f(L5) ≤ 37 mm', 'n', '#555'), ('   (35 mm → 5.25×, 0.35 µm / px, fits)', 'n', '#555')]
+ ('   FoV 1 mm → 5.0 mm: fits', 'n', '#2a7a2a'), ('', 'n', 0)]
+BASLER_ROWS = [('Basler  (7.5 × 5.6 mm, 1.85 µm px),  relay L4 = %g' % F4, 'b', '#000'),
+ ('L5 = %g mm:  M = %.1f×  (%.2f µm / px)' % (F5, 15.0 * F5 / F4, 1.85 / (15.0 * F5 / F4)), 'n', '#000')]
+_M = 15.0 * F5 / F4
+if _M > 5.6:
+    BASLER_ROWS += [('   FoV 1 mm → %.1f mm: %.0f%% over the 5.6 mm height' % (_M, (_M / 5.6 - 1) * 100), 'n', '#b06a00'),
+                    ('   usable FoV %.2f × %.2f mm' % (7.5 / _M, 5.6 / _M), 'n', '#b06a00'),
+                    ('   full 1 mm FoV needs f(L5) ≤ %.0f mm' % (5.6 / 15.0 * F4), 'n', '#555'),
+                    ('   (%.1f mm → 5.25×, %.2f µm / px, fits)' % (5.25 / 15.0 * F4, 1.85 / 5.25), 'n', '#555')]
+else:
+    BASLER_ROWS += [('   FoV 1 mm → %.1f mm: fits 5.6 mm' % _M, 'n', '#2a7a2a')]
+rows += BASLER_ROWS
 bh = 25 * len(rows) + 22; bx, by = W - 470, H - bh - 36
 E(bg, 'rect', x=bx, y=by, width=450, height=bh, rx=14, fill='#fff', stroke='#999', stroke_width=1.2)
 yy = by + 34

@@ -185,12 +185,13 @@ def labels():
                 s_ = ('passes full FoV' if ok else f"max field ±{n['h_ok']:.2f} mm") if n['h_ok'] < 99 else 'passes full FoV'
                 text(X, Z + 14, s_, 11.5, anc, color=col)
 LABSIDE = {('L2', 'T'): -1, ('L2', 'R'): -1, ('Filter', 'T'): -1, ('Filter', 'R'): -1, ('L1', 'T'): -1, ('L1', 'R'): -1, ('L4', 'T'): -1, ('L5', 'T'): -1}
-LABOFF = {('M6', 'T'): (-34, 0, 'end'), ('M8', 'T'): (-40, 44, 'end'), ('M3', 'T'): (50, 6, 'start'), ('Filter', 'T'): (-10, 42, 'end'), ('M6', 'R'): (-34, 0, 'end'), ('Filter', 'R'): (46, 0, 'start'), ('M8', 'T'): (-45, -34, 'end'), ('M7', 'T'): (34, -44, 'start'),
+LABOFF = {('M6', 'T'): (-34, 0, 'end'), ('M8', 'T'): (-40, 44, 'end'), ('M3', 'T'): (50, 6, 'start'), ('Filter', 'T'): (20, 78, 'middle'), ('M6', 'R'): (-34, 0, 'end'), ('Filter', 'R'): (46, 0, 'start'), ('M8', 'T'): (-45, -34, 'end'), ('M7', 'T'): (34, -44, 'start'),
           ('M10', 'R'): (45, -10, 'start'), ('M10', 'T'): (40, -26, 'start'), ('M5', 'R'): (46, 10, 'start'), ('M4', 'T'): (-34, -34, 'end')}
 bars_done = aperture_bars(); labels()
 
 # ---- title / legend -------------------------------------------------------------------------------------------
-text(30, 36, f"Beam envelope check ({'ports swapped' if swapped else 'qCMOS on T, Basler on R'}) – to scale", 24, 'start', bold=True)
+import layout as _LY
+text(30, 36, f"Beam envelope check ({'ports swapped' if swapped else 'qCMOS on T, Basler on R'}) – to scale   ·   variant L4 = {_LY.CUR['f_L4']:g} mm / L5 = {_LY.CUR['f_L5']:g} mm", 24, 'start', bold=True)
 text(30, 58, f"Assumes objective NA {NA:g} (EFL 10 mm → beam Ø{2 * a:g} mm), exit pupil at the objective back end (blue bar), FoV 1×1 mm, thin lenses, geometric rays. Grid = 100 mm.", 13, 'start', color='#444')
 lx, ly = 30, 84
 E(txt, 'rect', x=lx, y=ly - 9, width=26, height=9, fill='#d40000', fill_opacity=.45); text(lx + 34, ly, 'beam of an on-axis atom', 12, 'start')
