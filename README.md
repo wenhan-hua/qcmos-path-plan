@@ -111,7 +111,8 @@ To change the layout edit `src/layout.py` (positions, relay lengths) or the chai
 ## Third-party material
 - Component glyphs: **ComponentLibrary** by Alexander Franzen, CC BY-NC 3.0 (<https://www.gwoptics.org/ComponentLibrary/>). Downloaded on demand, not committed; the generated diagrams embed some glyphs, so keep the attribution and non-commercial use.
 - `src/vendor/`: three.js r147 and OrbitControls (MIT).
-- No license has been chosen for the code in this repo.
+- The repo's own code (`src/*.py`, `src/template.html`, `build.sh`, `fetch_library.sh`) and the layout/analysis are under the **MIT License** (`LICENSE`).
+  That license does **not** cover the third-party material above: the ComponentLibrary glyphs embedded in the generated diagrams (`variants/*/diagrams/*`) stay CC BY-NC 3.0 (non-commercial use, attribution required), and three.js keeps its own MIT notice.
 
 ## Changelog
 - **2026-11-23 (mirrored)**: whole layout mirrored across the objective axis (M1 now turns toward −z, qCMOS direction unchanged); all outputs of both variants regenerated; no collisions, field still passes.
