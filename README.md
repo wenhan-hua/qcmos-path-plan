@@ -68,6 +68,18 @@ Each field point leaves the f = 10 mm objective as a collimated bundle tilted by
 For comparison, the first layout (back aperture → L1 = 425 mm, L2 → L3 = 325 mm) passed only about ±0.1 mm of the ±0.5 mm field through the 1″ mirrors, filters and last lenses.
 `src/what_if.py` reproduces both. The result scales with NA: `NA=0.4 ./build.sh envelope`.
 
+### Orientation on the table
+
+The layout is mirrored across the objective axis so that **M1 turns toward −z** (the free side of the table; the earlier version turned toward +z). The qCMOS arm still leaves along the same direction relative to the objective (+x), and the DM, both camera arms and the T-port chain follow the mirror. Plan-view extents (mm, objective axis at z = 0, camera bodies excluded):
+
+| | z range | furthest part toward the old side |
+|---|---|---|
+| current (L4 100 / L5 40), qCMOS on T | −310 … +25 | M4 (2″ mirror in the T-port jog) at +25 mm |
+| trial (L4 250 / L5 100), qCMOS on T | −560 … +25 | same M4 |
+| port-swapped variants | −345 … +90 / +95 | the 1″ / 2″ M10 of the Basler arm |
+
+Flipping only the T-port jog to avoid the +25 mm overhang makes M4 collide with the Basler arm, so it stays. `QMIRROR=0 ./build.sh …` rebuilds the earlier orientation.
+
 ### Open items
 - The beam-size check puts the objective's exit pupil at the rear of the body (70 mm from the FoV); confirm the real pupil position from the objective's drawing.
 - DMSP1000L: 1030 nm is only 30 nm above the 1000 nm cutoff; confirm its reflection at 1030 nm from the Thorlabs transmission data.
@@ -102,6 +114,7 @@ To change the layout edit `src/layout.py` (positions, relay lengths) or the chai
 - No license has been chosen for the code in this repo.
 
 ## Changelog
+- **2026-11-23 (mirrored)**: whole layout mirrored across the objective axis (M1 now turns toward −z, qCMOS direction unchanged); all outputs of both variants regenerated; no collisions, field still passes.
 - **2026-11-23 (variants)**: added the trial L4 = 250 mm / L5 = 100 mm (same 6× Basler magnification, longer Basler arm, 2″ M10 needed); outputs split into `variants/L4-100_L5-40/` (current) and `variants/L4-250_L5-100/`; all diagrams, checks and 3D renders redone for both.
 - **2026-11-23 (compact layout)**: objective NA 0.55 and L4 = 2″ confirmed. Front end compacted (back aperture → L1 = 170 mm) and post-relay legs shortened so the full 1 mm field clears every optic; diagrams, envelope figures and 3D model regenerated; added `check_layout.py`.
 - **2026-11-23 (earlier)**: added the to-scale beam-envelope / clear-aperture check (found vignetting in the first layout); fixed the Basler sensor spacing in the 3D layout (sensor 40 mm behind L5, was 50 mm).

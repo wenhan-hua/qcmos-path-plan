@@ -23,6 +23,10 @@ VARIANTS = {
                           B_PARAMS={'R': (70, 75, 210), 'T': (80, 75, 200)},
                           B_TAIL=dict(L4_M9=60, JOG2=80, M10_L5=60, L5_SENSOR=100)),
 }
+# ORIENTATION: the whole layout is mirrored across the objective axis (z -> -z) when MIRROR is on, so that M1 turns toward -z
+# (the side of the table that is free).  qCMOS stays on the beam axis direction (+x) relative to the objective.
+# QMIRROR=0 reproduces the earlier orientation (M1 turning toward +z).
+MIRROR = os.environ.get('QMIRROR', '1') == '1'
 DEFAULT_VARIANT = 'L4-100_L5-40'
 VARIANT = os.environ.get('QVARIANT', DEFAULT_VARIANT)
 CUR = VARIANTS[VARIANT]
@@ -89,6 +93,12 @@ def build(swapped):
     wl = lambda f: 852 if f is Q else 1030
     beams.append(dict(pts=common, wl='both'))
     beams.append(dict(pts=pt, wl=wl(f_T))); beams.append(dict(pts=pr, wl=wl(f_R)))
+    if MIRROR:                                           # mirror across the objective axis: z -> -z (positions and directions)
+        for p in parts:
+            p['z'] = -p['z'] + 0.0; p['dz'] = -p['dz'] + 0.0
+            for k in ('din', 'dout'):
+                if k in p: p[k] = (p[k][0], -p[k][1] + 0.0)
+        for b in beams: b['pts'] = [(x, -z + 0.0) for x, z in b['pts']]
     xs = [p['x'] for p in parts]; zs = [p['z'] for p in parts]
     ext = dict(minx=min(xs), maxx=max(xs) + 160, minz=min(zs), maxz=max(zs) + 160)
     return dict(parts=parts, beams=beams, ext=ext, swapped=swapped)

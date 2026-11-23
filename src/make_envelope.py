@@ -7,6 +7,7 @@ import sys, math
 sys.path.insert(0, sys.argv[1])
 from cl_lib import *
 import optics_trace as O
+import layout as _LY
 
 variant = sys.argv[5] if len(sys.argv) > 5 else 'default'
 NA = float(sys.argv[6]) if len(sys.argv) > 6 else O.DEFAULT_NA
@@ -23,7 +24,7 @@ for k in 'TR':                                   # camera bodies extend ~170 mm 
     body = 170 if s_.get('model') == 'qcmos' else 60
     pts.append((s_['x'] + body * (s_['x'] - p_['x']) / d_, s_['z'] + body * (s_['z'] - p_['z']) / d_))
 X0, X1 = min(p[0] for p in pts) - 90, max(p[0] for p in pts) + 60
-Z0, Z1 = min(p[1] for p in pts) - 110, max(p[1] for p in pts) + 40
+Z0, Z1 = min(p[1] for p in pts) - 110, max(p[1] for p in pts) + (95 if _LY.MIRROR else 40)
 LW, LH = (X1 - X0) * PPM, (Z1 - Z0) * PPM
 TABLE_H = 400
 W, H = int(max(LW + 40, 1560)), int(LH + TABLE_H)
@@ -158,7 +159,7 @@ def labels():
             done.add(key); k = n['kind']
             if k in ('fov', 'pupil'): continue
             prev = nodes[i - 1]; ux, uz = unit((prev['x'], prev['z']), (n['x'], n['z']))
-            side = LABSIDE.get((n['name'], br), 1)
+            side = LABSIDE.get((n['name'], br), 1) * (-1 if _LY.MIRROR else 1)
             nx, nz = -uz * side, ux * side
             R = max(n.get('r_edge', 0), n.get('r_allow', 0), 20) + 22
             if k in ('mirror', 'dm'):                    # outside the fold
@@ -170,7 +171,9 @@ def labels():
             X, Z = px(n['x'] + nx * R), pz(n['z'] + nz * R)
             anc = 'start' if nx > .5 else 'end' if nx < -.5 else 'middle'
             if (n['name'], br) in LABOFF:
-                ox, oz, anc = LABOFF[(n['name'], br)]; X, Z = px(n['x'] + ox), pz(n['z'] + oz)
+                ox, oz, anc = LABOFF[(n['name'], br)]
+                if _LY.MIRROR: oz = -oz
+                X, Z = px(n['x'] + ox), pz(n['z'] + oz)
             if k == 'filter':
                 if n.get('_second'): continue
                 fl = [m for m in nodes if m['kind'] == 'filter']; hmin = min(m['h_ok'] for m in fl)

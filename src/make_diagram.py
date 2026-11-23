@@ -11,7 +11,10 @@ FLIP = len(sys.argv) > 5 and sys.argv[5] == 'flip'
 
 L = Lib(sys.argv[2], sys.argv[3])
 W = 1700
-H = 1490 if FLIP else 1060
+MIR = LY.MIRROR                                   # whole layout mirrored across the objective axis (M1 turns the other way)
+H0 = 1490 if FLIP else 1060
+H = H0 + (70 if MIR else 0)
+PAN = []
 doc = L.new_doc(W, H)
 defs = L.docdefs
 def E(parent, tag, **kw):
@@ -22,7 +25,7 @@ g = E(defs, 'linearGradient', id='fov', x1=0, y1=0, x2=1, y2=0)
 for o, c in [(0, '#89A4B6'), (0.5, '#FFFFFF'), (1, '#89A4B6')]: E(g, 'stop', offset=o, style=f'stop-color:{c}')
 
 FONT = 'Helvetica, Arial, sans-serif'; RED = '#ee0000'; S2, S1 = 2.3, 1.45
-bg = E(doc, 'g'); beams = E(doc, 'g'); comps = E(doc, 'g'); txt = E(doc, 'g')
+bg = E(doc, 'g'); beams = E(doc, 'g'); comps = E(doc, 'g'); txt = E(doc, 'g'); ubg = E(doc, 'g'); utxt = E(doc, 'g')   # u* = fixed UI, not mirrored
 E(bg, 'rect', width=W, height=H, fill='white')
 
 def text(x, y, lines, anchor='middle', size=15, color='#000'):
@@ -141,6 +144,7 @@ def panel(pts, boxes, fill, title, pos):
     y0 = max(y0, 92)
     if pos == 'T': x0 = max(x0, DM[0] + 55); y0 = min(y0, DM[1] - 45); y1 = min(y1, DM[1] + 112)
     else: y0 = max(y0, DM[1] + 125); x0 = min(x0, DM[0] - 45)
+    PAN.append((y0, y1))
     E(bg, 'rect', x=x0, y=y0, width=x1 - x0, height=y1 - y0, rx=22, fill=fill)
     t = E(txt, 'text', x=(x1 - 22) if pos == 'T' else (x0 + 22), y=(y0 + 30) if pos == 'T' else (y1 - 16), text_anchor='end' if pos == 'T' else 'start', font_family=FONT, font_size=17, font_weight='bold', fill='#555'); t.text = title
 PT = 'Transmitted path  →  ' + a['name']; PR = 'Reflected path  →  ' + b['name']
@@ -152,8 +156,8 @@ else:
     text(DMx - 40, Y1 - 85, ['Thorlabs DMSP1000L (2″ shortpass)', 'T: 852 nm  ·  R: 1030 nm (mostly)', '1000 nm cutoff'])
 
 title = 'Single-atom tweezer imaging: beam-path plan  (' + ('ports swapped: qCMOS on R, Basler on T' if FLIP else 'qCMOS on T, Basler on R') + ')'
-t = E(txt, 'text', x=40, y=48, font_family=FONT, font_size=28, font_weight='bold'); t.text = title
-t = E(txt, 'text', x=40, y=72, font_family=FONT, font_size=14, fill='#555'); t.text = 'Rev. 2026-11-23 (compact), variant L4 = %g mm / L5 = %g mm.  Schematic (spacings: see box / 3D layout).  All beams at the static-objective height.  2″ optics drawn larger than 1″.' % (F4, F5)
+t = E(utxt, 'text', x=40, y=48, font_family=FONT, font_size=28, font_weight='bold'); t.text = title
+t = E(utxt, 'text', x=40, y=72, font_family=FONT, font_size=14, fill='#555'); t.text = 'Rev. 2026-11-23 (compact), variant L4 = %g mm / L5 = %g mm.  Schematic (spacings: see box / 3D layout).  All beams at the static-objective height.  2″ optics drawn larger than 1″.' % (F4, F5)
 
 rows = [('Magnification  M = (150 / 10) × f(last) / f(relay)', 'b', '#000'),
  ('L1 = 150 mm focuses; the relay lens collimates', 'n', '#555'), ('', 'n', 0),
@@ -172,20 +176,33 @@ if _M > 5.6:
 else:
     BASLER_ROWS += [('   FoV 1 mm → %.1f mm: fits 5.6 mm' % _M, 'n', '#2a7a2a')]
 rows += BASLER_ROWS
+YMIN = min(p[0] for p in PAN); YMAX = max(p[1] for p in PAN); CPIV = YMIN + YMAX + (70 if MIR else 0)   # mirror: y -> CPIV - y
 bh = 25 * len(rows) + 22; bx, by = W - 470, H - bh - 36
-E(bg, 'rect', x=bx, y=by, width=450, height=bh, rx=14, fill='#fff', stroke='#999', stroke_width=1.2)
+if MIR: by = CPIV - (H0 - 36)
+E(ubg, 'rect', x=bx, y=by, width=450, height=bh, rx=14, fill='#fff', stroke='#999', stroke_width=1.2)
 yy = by + 34
 for s_, w, c in rows:
     if s_:
-        t = E(txt, 'text', x=bx + 18, y=yy, font_family=FONT, font_size=14.5, fill=c, font_weight='bold' if w == 'b' else 'normal', xml_space='preserve'); t.text = s_
+        t = E(utxt, 'text', x=bx + 18, y=yy, font_family=FONT, font_size=14.5, fill=c, font_weight='bold' if w == 'b' else 'normal', xml_space='preserve'); t.text = s_
     yy += 25
 import check_layout
 kl = check_layout.summary_lines(FLIP)
 kh = 25 * (len(kl) + 1) - 5; kx, ky = 40, H - kh - 40
-E(bg, 'rect', x=kx, y=ky, width=405, height=kh, rx=14, fill='#fff', stroke='#999', stroke_width=1.2)
-t = E(txt, 'text', x=kx + 16, y=ky + 26, font_family=FONT, font_size=14.5, font_weight='bold'); t.text = 'Key spacings (beam path, mm; from the 3D layout)'
+if MIR: ky = CPIV - (H0 - 40)
+E(ubg, 'rect', x=kx, y=ky, width=405, height=kh, rx=14, fill='#fff', stroke='#999', stroke_width=1.2)
+t = E(utxt, 'text', x=kx + 16, y=ky + 26, font_family=FONT, font_size=14.5, font_weight='bold'); t.text = 'Key spacings (beam path, mm; from the 3D layout)'
 for i, ln in enumerate(kl):
-    t = E(txt, 'text', x=kx + 16, y=ky + 52 + i * 22, font_family=FONT, font_size=12.5, fill='#1a6f1a' if ln.startswith('full') else '#222', xml_space='preserve'); t.text = ln
-t = E(txt, 'text', x=40, y=H - 18, font_family=FONT, font_size=11, fill='#777')
+    t = E(utxt, 'text', x=kx + 16, y=ky + 52 + i * 22, font_family=FONT, font_size=12.5, fill='#1a6f1a' if ln.startswith('full') else '#222', xml_space='preserve'); t.text = ln
+t = E(utxt, 'text', x=40, y=H - 18, font_family=FONT, font_size=11, fill='#777')
 t.text = 'Component glyphs: ComponentLibrary by Alexander Franzen, CC BY-NC 3.0 (gwoptics.org/ComponentLibrary).'
+if MIR:   # mirror the drawing layers across the objective axis (vertical flip); glyphs flip with the layout, text blocks are re-seated
+    for g_ in (bg, beams, comps):
+        if g_ is not bg: g_.set('transform', f'translate(0,{CPIV}) scale(1,-1)')
+    # page background stays put; only the panels in bg flip
+    for r_ in list(bg):
+        if r_.get('fill') != 'white': r_.set('transform', f'translate(0,{CPIV}) scale(1,-1)')
+    for t_ in txt:
+        if t_.tag != '{%s}text' % SVG: continue
+        size = float(t_.get('font-size')); n_ = max(1, len(t_.findall('{%s}tspan' % SVG))); y_last = float(t_.get('y')) + (n_ - 1) * size * 1.25
+        t_.set('y', f'{CPIV - y_last + 0.75 * size:.1f}')
 ET.ElementTree(doc).write(sys.argv[4], xml_declaration=True, encoding='utf-8')
